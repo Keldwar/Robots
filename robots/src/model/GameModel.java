@@ -1,24 +1,23 @@
-package gui;
+package model;
 
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.List;
 
-public class GameModel implements Subject{
+public class GameModel {
     private Robot robot;
-    private List<Observer> observersList;
+    private Target target;
+
     public GameModel() {
         this.robot = new Robot();
-        observersList = new ArrayList<>();
+        this.target = new Target();
     }
 
-    protected void setTargetPosition(Point p) {
-        robot.setTargetPositionX(p.x);
-        robot.setTargetPositionY(p.y);
-        notify();
+    public void setTargetPosition(Point p) {
+        target.setX(p.x);
+        target.setY(p.y);
     }
+
     protected Point getTargetPosition() {
-        return robot.getTargetPosition();
+        return new Point(target.getX(), target.getY());
     }
 
 
@@ -44,11 +43,7 @@ public class GameModel implements Subject{
         }
         return angle;
     }
-
-    private static int round(double value) {
-        return (int) (value + 0.5);
-    }
-
+    
     private static double applyLimits(double value, double min, double max) {
         if (value < min)
             return min;
@@ -78,45 +73,32 @@ public class GameModel implements Subject{
         robot.setRobotDirection(newDirection);
     }
 
-    protected void onModelUpdateEvent() {
-        double distance = distance(robot.getTargetPositionX(), robot.getTargetPositionY(),
+    public void updateModel() {
+        double distance = distance(target.getX(), target.getY(),
                 robot.getPositionX(), robot.getPositionY());
         if (distance < 0.5) {
             return;
         }
         double velocity = Robot.maxVelocity;
         double angleToTarget = angleTo(robot.getPositionX(), robot.getPositionY(),
-                robot.getTargetPositionX(), robot.getTargetPositionY());
+                target.getX(), target.getY());
         double angularVelocity = 0;
         if (angleToTarget > robot.getRobotDirection()) {
-            angularVelocity = robot.maxAngularVelocity;
+            angularVelocity = Robot.maxAngularVelocity;
         }
         if (angleToTarget < robot.getRobotDirection()) {
-            angularVelocity = -robot.maxAngularVelocity;
+            angularVelocity = -Robot.maxAngularVelocity;
         }
 
         moveRobot(velocity, angularVelocity, 10);
-        notifyObservers();
     }
 
     public Robot getRobot() {
         return robot;
     }
 
-    @Override
-    public void attach(Observer observer) {
-        observersList.add(observer);
+    public Target getTarget() {
+        return target;
     }
 
-    @Override
-    public void detach(Observer observer) {
-        observersList.remove(observer);
-    }
-
-    @Override
-    public void notifyObservers() {
-        for (Observer observer : observersList) {
-            observer.Update();
-        }
-    }
 }

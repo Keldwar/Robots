@@ -1,6 +1,5 @@
-package gui;
+package model;
 
-import java.awt.*;
 
 public class Robot {
     private double positionX = 100;
@@ -10,8 +9,7 @@ public class Robot {
     public static final double maxAngularVelocity = 0.001;
 
     private volatile double robotDirection = 0;
-    private volatile int targetPositionX = 150;
-    private volatile int targetPositionY = 100;
+
 
     public double getPositionX() {
         return positionX;
@@ -35,25 +33,5 @@ public class Robot {
 
     public void setRobotDirection(double robotDirection) {
         this.robotDirection = robotDirection;
-    }
-
-    public int getTargetPositionX() {
-        return targetPositionX;
-    }
-
-    public void setTargetPositionX(int targetPositionX) {
-        this.targetPositionX = targetPositionX;
-    }
-
-    public int getTargetPositionY() {
-        return targetPositionY;
-    }
-
-    public void setTargetPositionY(int targetPositionY) {
-        this.targetPositionY = targetPositionY;
-    }
-
-    public Point getTargetPosition() {
-        return new Point(getTargetPositionX(), getTargetPositionY());
     }
 }
