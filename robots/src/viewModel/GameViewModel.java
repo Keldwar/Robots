@@ -1,6 +1,7 @@
 package viewModel;
 
 import View.GameView;
+import View.GameWindow;
 import model.GameModel;
 
 import java.awt.event.MouseAdapter;
@@ -11,20 +12,22 @@ import java.util.TimerTask;
 
 public class GameViewModel {
     private GameModel gameModel;
-    private GameView gameView;
+    private GameWindow gameWindow;
     private final java.util.Timer m_timer = initTimer();
 
     private static java.util.Timer initTimer() {
         return new Timer("events generator", true);
     }
 
-    public GameViewModel(GameModel gameModel, GameView gameView) {
+    public GameViewModel(GameModel gameModel, GameWindow gameWindow) {
         this.gameModel = gameModel;
-        this.gameView = gameView;
+        this.gameWindow = gameWindow;
+
         m_timer.schedule(new TimerTask() {
             @Override
             public void run() {
-                gameView.updateView();
+                gameModel.setDimension(gameWindow.getSize());
+                getGameView().updateView();
             }
         }, 0, 50);
         m_timer.schedule(new TimerTask() {
@@ -33,16 +36,16 @@ public class GameViewModel {
                 gameModel.updateModel();
             }
         }, 0, 10);
-        gameView.addMouseListener(new MouseAdapter() {
+        gameWindow.getGameView().addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 gameModel.setTargetPosition(e.getPoint());
-                gameView.repaint();
+                getGameView().repaint();
             }
         });
     }
 
     public GameView getGameView() {
-        return gameView;
+        return gameWindow.getGameView();
     }
 }

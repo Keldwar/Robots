@@ -1,4 +1,5 @@
 import View.GameView;
+import View.GameWindow;
 import model.GameModel;
 import viewModel.GameViewModel;
 
@@ -10,7 +11,8 @@ public class Main {
 
         GameModel gameModel = new GameModel();
         GameView gameView = new GameView(gameModel);
-        GameViewModel viewModel = new GameViewModel(gameModel, gameView);
+        GameWindow gameWindow = new GameWindow(gameView);
+        GameViewModel viewModel = new GameViewModel(gameModel, gameWindow);
 
         try {
             UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");

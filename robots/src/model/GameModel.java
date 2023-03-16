@@ -5,6 +5,7 @@ import java.awt.*;
 public class GameModel {
     private Robot robot;
     private Target target;
+    private Dimension dimension;
 
     public GameModel() {
         this.robot = new Robot();
@@ -15,11 +16,15 @@ public class GameModel {
         target.setX(p.x);
         target.setY(p.y);
     }
-
     protected Point getTargetPosition() {
         return new Point(target.getX(), target.getY());
     }
-
+    public void setDimension(Dimension dimension) {
+        this.dimension = dimension;
+    }
+    public Dimension getDimension() {
+        return this.dimension;
+    }
 
     private static double distance(double x1, double y1, double x2, double y2) {
         double diffX = x1 - x2;
@@ -43,7 +48,20 @@ public class GameModel {
         }
         return angle;
     }
-    
+    private double normalizedPositionX(double x) {
+        if (x < 0)
+            return 0;
+        if (x > dimension.height)
+            return dimension.height;
+        return x;
+    }
+    private double normalizedPositionY(double y) {
+        if (y < 0)
+            return 0;
+        if (y > dimension.width)
+            return dimension.width;
+        return y;
+    }
     private static double applyLimits(double value, double min, double max) {
         if (value < min)
             return min;
@@ -67,8 +85,8 @@ public class GameModel {
         if (!Double.isFinite(newY)) {
             newY = robot.getPositionY() + velocity * duration * Math.sin(robot.getRobotDirection());
         }
-        robot.setPositionX(newX);
-        robot.setPositionY(newY);
+        robot.setPositionX(normalizedPositionX(newX));
+        robot.setPositionY(normalizedPositionY(newY));
         double newDirection = asNormalizedRadians(robot.getRobotDirection() + angularVelocity * duration);
         robot.setRobotDirection(newDirection);
     }
