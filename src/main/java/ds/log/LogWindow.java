@@ -1,4 +1,4 @@
-package log;
+package ds.log;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;

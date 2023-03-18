@@ -1,4 +1,4 @@
-package model;
+package ds.model;
 
 import java.awt.*;
 import java.awt.geom.AffineTransform;

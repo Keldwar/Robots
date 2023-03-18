@@ -1,7 +1,9 @@
-import View.GameWindow;
-import log.LogWindow;
-import log.Logger;
-import viewModel.GameViewModel;
+package ds;
+
+import ds.View.GameWindow;
+import ds.log.LogWindow;
+import ds.log.Logger;
+import ds.viewModel.GameViewModel;
 
 import javax.swing.*;
 import java.awt.*;

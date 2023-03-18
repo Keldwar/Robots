@@ -1,4 +1,4 @@
-package model;
+package ds.model;
 
 
 public class Robot {

@@ -1,8 +1,8 @@
-package View;
+package ds.View;
 
-import model.GameModel;
-import model.RobotDrawer;
-import model.TargetDrawer;
+import ds.model.GameModel;
+import ds.model.RobotDrawer;
+import ds.model.TargetDrawer;
 
 import javax.swing.*;
 import java.awt.*;

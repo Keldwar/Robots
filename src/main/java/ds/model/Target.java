@@ -1,4 +1,4 @@
-package model;
+package ds.model;
 
 public class Target {
     private volatile int x;

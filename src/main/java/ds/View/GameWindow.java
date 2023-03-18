@@ -1,4 +1,4 @@
-package View;
+package ds.View;
 
 
 import javax.swing.*;

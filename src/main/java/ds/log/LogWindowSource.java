@@ -1,4 +1,4 @@
-package log;
+package ds.log;
 
 import java.util.ArrayList;
 import java.util.Collections;

@@ -1,4 +1,4 @@
-package log;
+package ds.log;
 
 public class LogEntry
 {

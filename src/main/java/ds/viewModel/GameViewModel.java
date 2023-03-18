@@ -1,8 +1,8 @@
-package viewModel;
+package ds.viewModel;
 
-import View.GameView;
-import View.GameWindow;
-import model.GameModel;
+import ds.View.GameView;
+import ds.View.GameWindow;
+import ds.model.GameModel;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;

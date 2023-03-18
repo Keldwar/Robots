@@ -1,7 +1,9 @@
-import View.GameView;
-import View.GameWindow;
-import model.GameModel;
-import viewModel.GameViewModel;
+package ds;
+
+import ds.View.GameView;
+import ds.View.GameWindow;
+import ds.model.GameModel;
+import ds.viewModel.GameViewModel;
 
 import javax.swing.*;
 import java.awt.*;
