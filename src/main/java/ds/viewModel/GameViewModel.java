@@ -1,7 +1,7 @@
 package ds.viewModel;
 
-import ds.View.GameView;
-import ds.View.GameWindow;
+import ds.view.GameView;
+import ds.view.GameWindow;
 import ds.model.GameModel;
 
 import java.awt.event.MouseAdapter;

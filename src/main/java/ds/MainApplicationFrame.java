@@ -1,6 +1,6 @@
 package ds;
 
-import ds.View.GameWindow;
+import ds.view.GameWindow;
 import ds.log.LogWindow;
 import ds.log.Logger;
 import ds.viewModel.GameViewModel;

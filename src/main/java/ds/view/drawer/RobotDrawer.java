@@ -1,4 +1,6 @@
-package ds.model;
+package ds.view.drawer;
+
+import ds.model.Robot;
 
 import java.awt.*;
 import java.awt.geom.AffineTransform;
