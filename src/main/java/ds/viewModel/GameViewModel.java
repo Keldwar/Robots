@@ -4,6 +4,8 @@ import ds.view.GameView;
 import ds.view.GameWindow;
 import ds.model.GameModel;
 
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Timer;
@@ -22,7 +24,9 @@ public class GameViewModel {
     public GameViewModel(GameModel gameModel, GameWindow gameWindow) {
         this.gameModel = gameModel;
         this.gameWindow = gameWindow;
-
+        initListeners();
+    }
+    private void initListeners() {
         m_timer.schedule(new TimerTask() {
             @Override
             public void run() {
@@ -43,9 +47,21 @@ public class GameViewModel {
                 getGameView().repaint();
             }
         });
+        gameWindow.addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentResized(final ComponentEvent e) {
+                super.componentResized(e);
+                System.out.println("resize");
+                gameModel.setDimension((gameWindow.getSize()));
+                System.out.println(gameModel.getDimension());
+            }
+        });
     }
 
     public GameView getGameView() {
         return gameWindow.getGameView();
+    }
+    public GameWindow getGameWindow() {
+        return gameWindow;
     }
 }

@@ -11,16 +11,18 @@ import java.awt.*;
 public class Main {
     public static void main(String[] args) {
 
-        GameModel gameModel = new GameModel();
-        GameView gameView = new GameView(gameModel);
-        GameWindow gameWindow = new GameWindow(gameView);
-        GameViewModel viewModel = new GameViewModel(gameModel, gameWindow);
+
 
         try {
             UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
         } catch (Exception e) {
             e.printStackTrace();
         }
+        GameModel gameModel = new GameModel();
+        GameView gameView = new GameView(gameModel);
+        GameWindow gameWindow = new GameWindow(gameView);
+        GameViewModel viewModel = new GameViewModel(gameModel, gameWindow);
+
         SwingUtilities.invokeLater(() -> {
             MainApplicationFrame frame = new MainApplicationFrame(viewModel);
             frame.pack();

@@ -51,15 +51,15 @@ public class GameModel {
     private double normalizedPositionX(double x) {
         if (x < 0)
             return 0;
-        if (x > dimension.height)
-            return dimension.height;
+        if (x > dimension.width)
+            return dimension.width;
         return x;
     }
     private double normalizedPositionY(double y) {
         if (y < 0)
             return 0;
-        if (y > dimension.width)
-            return dimension.width;
+        if (y > dimension.height)
+            return dimension.height;
         return y;
     }
     private static double applyLimits(double value, double min, double max) {
