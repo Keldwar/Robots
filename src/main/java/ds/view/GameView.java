@@ -1,11 +1,13 @@
 package ds.view;
 
 import ds.model.GameModel;
+import ds.model.Robot;
 import ds.view.drawer.RobotDrawer;
 import ds.view.drawer.TargetDrawer;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 
 public class GameView extends JPanel {
     private final GameModel gameModel;
@@ -31,7 +33,10 @@ public class GameView extends JPanel {
     public void paint(Graphics g) {
         super.paint(g);
         Graphics2D g2d = (Graphics2D) g;
-        robotDrawer.drawRobot(g2d, gameModel.getRobot());
-        targetDrawer.drawTarget(g2d, gameModel.getTarget());
+        ArrayList<Robot> robots = (ArrayList<Robot>) gameModel.getRobots();
+        for (Robot robot : robots) {
+            robotDrawer.drawRobot(g2d, robot);
+            targetDrawer.drawTarget(g2d, robot.getTarget());
+        }
     }
 }

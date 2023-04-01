@@ -6,8 +6,8 @@ import java.awt.*;
 
 public class GameWindow extends JInternalFrame {
     private final GameView gameView;
-    public GameWindow(GameView gameView)
-    {
+
+    public GameWindow(GameView gameView) {
         super("Игровое поле", true, true, true, true);
         this.gameView = gameView;
         JPanel panel = new JPanel(new BorderLayout());
@@ -16,6 +16,7 @@ public class GameWindow extends JInternalFrame {
         pack();
         setSize(400, 400);
     }
+
     public GameView getGameView() {
         return this.gameView;
     }
