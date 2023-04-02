@@ -4,22 +4,47 @@ package ds.model;
 import java.awt.*;
 import java.beans.PropertyChangeEvent;
 
-public class Robot implements Entity {
+public class Bacteria implements Entity {
     private double positionX;
     private double positionY;
     private Target target;
     private Dimension dimension;
-
+    private Mood mood;
+    private int satiety;
     public static final double maxVelocity = 0.05;
     public static final double maxAngularVelocity = 0.005;
-
+    private boolean isAlive;
     private volatile double robotDirection;
+    private boolean isTargetAchieved;
 
-    public Robot() {
+    public Bacteria(double x, double y) {
+        this.positionX = x;
+        this.positionY = y;
+        this.target = new Target();
+        this.robotDirection = Math.random() * 10;
+        this.dimension = new Dimension(400, 400);
+        this.mood = Mood.randomMood();
+        this.satiety = (int) (50 + Math.random() * 100);
+        this.isAlive = true;
+    }
+
+    private void setRandomMood() {
+        this.mood = Mood.randomMood();
+    }
+
+    public Bacteria() {
         this.positionX = 100;
         this.positionY = 100;
         this.target = new Target();
         this.robotDirection = 0;
+    }
+
+    public void setMood(Mood mood) {
+        this.mood = mood;
+    }
+
+    public int getSatiety() {
+        return satiety;
     }
 
     public void setDimension(Dimension dimension) {
@@ -105,13 +130,20 @@ public class Robot implements Entity {
         return target;
     }
 
+    public void changeSatiety(int satiety) {
+        this.satiety += satiety;
+    }
+
     public void setTarget(Point point) {
+        if (point.x > dimension.width || point.y > dimension.height) {
+            this.target.setTargetPosition(new Point(point.x / dimension.width, point.y / dimension.height));
+        }
         this.target.setTargetPosition(point);
     }
 
     private void moveRobot(double velocity, double angularVelocity, double duration) {
-        velocity = applyLimits(velocity, 0, Robot.maxVelocity);
-        angularVelocity = applyLimits(angularVelocity, -Robot.maxAngularVelocity, Robot.maxAngularVelocity);
+        velocity = applyLimits(velocity, 0, Bacteria.maxVelocity);
+        angularVelocity = applyLimits(angularVelocity, -Bacteria.maxAngularVelocity, Bacteria.maxAngularVelocity);
         double newX = getPositionX() + velocity / angularVelocity *
                 (Math.sin(getRobotDirection() + angularVelocity * duration) -
                         Math.sin(getRobotDirection()));
@@ -128,32 +160,63 @@ public class Robot implements Entity {
         setPositionY(normalizedPositionY(newY));
         double newDirection = asNormalizedRadians(getRobotDirection() + angularVelocity * duration);
         setRobotDirection(newDirection);
+
     }
+
 
     @Override
     public void update() {
-        double distance = distance(target.getX(), target.getY(),
-                getPositionX(), getPositionY());
-        if (distance < 0.5) {
+        if (!this.isAlive) {
+            this.setMood(Mood.DEAD);
+
             return;
         }
-        double velocity = Robot.maxVelocity;
+        if (this.satiety < 50) {
+            if (this.satiety < 0) {
+                isAlive = false;
+            }
+            this.setMood(Mood.HUNGRY);
+
+        }
+        double distance = distance(target.getX(), target.getY(),
+                getPositionX(), getPositionY());
+        this.isTargetAchieved = false;
+        if (distance < 0.5) {
+            this.isTargetAchieved = true;
+            this.onTargetAchieved();
+
+            return;
+        }
+        double velocity = Bacteria.maxVelocity;
         double angleToTarget = angleTo(getPositionX(), getPositionY(),
                 target.getX(), target.getY());
         double angularVelocity = 0;
         if (angleToTarget > getRobotDirection()) {
-            angularVelocity = Robot.maxAngularVelocity;
+            angularVelocity = Bacteria.maxAngularVelocity;
         }
         if (angleToTarget < getRobotDirection()) {
-            angularVelocity = -Robot.maxAngularVelocity;
+            angularVelocity = -Bacteria.maxAngularVelocity;
         }
 
         moveRobot(velocity, angularVelocity, 10);
+
+    }
+
+    private void onTargetAchieved() {
+        this.setTarget(new Point((int) (Math.random() * dimension.width), (int) (Math.random() * dimension.height)));
+        this.satiety += 20;
+        if (this.satiety > 50) {
+            this.setRandomMood();
+        }
     }
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         Point point = (Point) evt.getNewValue();
         setTarget(point);
+    }
+
+    public Mood getMood() {
+        return mood;
     }
 }

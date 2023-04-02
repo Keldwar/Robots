@@ -1,7 +1,7 @@
 package ds.view;
 
 import ds.model.GameModel;
-import ds.model.Robot;
+import ds.model.Bacteria;
 import ds.view.drawer.RobotDrawer;
 import ds.view.drawer.TargetDrawer;
 
@@ -33,10 +33,10 @@ public class GameView extends JPanel {
     public void paint(Graphics g) {
         super.paint(g);
         Graphics2D g2d = (Graphics2D) g;
-        ArrayList<Robot> robots = (ArrayList<Robot>) gameModel.getRobots();
-        for (Robot robot : robots) {
-            robotDrawer.drawRobot(g2d, robot);
-            targetDrawer.drawTarget(g2d, robot.getTarget());
+        ArrayList<Bacteria> bacterias = (ArrayList<Bacteria>) gameModel.getRobots();
+        for (Bacteria bacteria : bacterias) {
+            robotDrawer.drawRobot(g2d, bacteria);
+            targetDrawer.drawTarget(g2d, bacteria.getTarget());
         }
     }
 }

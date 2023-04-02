@@ -4,6 +4,7 @@ import ds.view.GameView;
 import ds.view.GameWindow;
 import ds.model.GameModel;
 
+import java.awt.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.MouseAdapter;
@@ -45,7 +46,8 @@ public class GameViewModel {
         gameWindow.getGameView().addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                gameModel.setTarget(e.getPoint());
+                System.out.println(e.getPoint());
+                gameModel.setTarget(new Point((int) (e.getPoint().x / 0.8), (int) (e.getPoint().y / 0.8)));
                 getGameView().repaint();
             }
         });
