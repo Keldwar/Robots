@@ -7,14 +7,14 @@ import ds.model.Mood;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 
-public class RobotDrawer extends Drawer {
+public class BacteriaDrawer extends Drawer {
     @Override
     public void draw(Graphics2D g, Entity entity)
     {
         Bacteria bacteria = (Bacteria) entity;
         int robotCenterX = (int) Math.round(bacteria.getPositionX());
         int robotCenterY = (int) Math.round(bacteria.getPositionY());
-        AffineTransform t = AffineTransform.getRotateInstance(bacteria.getRobotDirection(), robotCenterX, robotCenterY);
+        AffineTransform t = AffineTransform.getRotateInstance(bacteria.getBacteriaDirection(), robotCenterX, robotCenterY);
         g.setTransform(t);
         g.setColor(bacteria.getMood().getColor());
         if (bacteria.getMood().equals(Mood.HUNGRY)) {

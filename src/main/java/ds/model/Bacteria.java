@@ -15,14 +15,14 @@ public class Bacteria implements Entity {
     public static final double maxVelocity = 0.05;
     public static final double maxAngularVelocity = 0.005;
     private boolean isAlive;
-    private volatile double robotDirection;
+    private volatile double bacteriaDirection;
     private boolean isTargetAchieved;
 
     public Bacteria(double x, double y) {
         this.positionX = x;
         this.positionY = y;
         this.target = new Target();
-        this.robotDirection = Math.random() * 10;
+        this.bacteriaDirection = Math.random() * 10;
         this.dimension = new Dimension(400, 400);
         this.mood = Mood.randomMood();
         this.satiety = (int) (50 + Math.random() * 100);
@@ -37,7 +37,7 @@ public class Bacteria implements Entity {
         this.positionX = 100;
         this.positionY = 100;
         this.target = new Target();
-        this.robotDirection = 0;
+        this.bacteriaDirection = 0;
     }
 
     public void setMood(Mood mood) {
@@ -72,12 +72,12 @@ public class Bacteria implements Entity {
         this.positionY = positionY;
     }
 
-    public double getRobotDirection() {
-        return robotDirection;
+    public double getBacteriaDirection() {
+        return bacteriaDirection;
     }
 
-    public void setRobotDirection(double robotDirection) {
-        this.robotDirection = robotDirection;
+    public void setBacteriaDirection(double bacteriaDirection) {
+        this.bacteriaDirection = bacteriaDirection;
     }
 
     private static double distance(double x1, double y1, double x2, double y2) {
@@ -142,26 +142,25 @@ public class Bacteria implements Entity {
         this.target.setTargetPosition(point);
     }
 
-    private void moveRobot(double velocity, double angularVelocity, double duration) {
+    private void moveBacteria(double velocity, double angularVelocity, double duration) {
         velocity = applyLimits(velocity, 0, Bacteria.maxVelocity);
         angularVelocity = applyLimits(angularVelocity, -Bacteria.maxAngularVelocity, Bacteria.maxAngularVelocity);
         double newX = getPositionX() + velocity / angularVelocity *
-                (Math.sin(getRobotDirection() + angularVelocity * duration) -
-                        Math.sin(getRobotDirection()));
+                (Math.sin(getBacteriaDirection() + angularVelocity * duration) -
+                        Math.sin(getBacteriaDirection()));
         if (!Double.isFinite(newX)) {
-            newX = getPositionX() + velocity * duration * Math.cos(getRobotDirection());
+            newX = getPositionX() + velocity * duration * Math.cos(getBacteriaDirection());
         }
         double newY = getPositionY() - velocity / angularVelocity *
-                (Math.cos(getRobotDirection() + angularVelocity * duration) -
-                        Math.cos(getRobotDirection()));
+                (Math.cos(getBacteriaDirection() + angularVelocity * duration) -
+                        Math.cos(getBacteriaDirection()));
         if (!Double.isFinite(newY)) {
-            newY = getPositionY() + velocity * duration * Math.sin(getRobotDirection());
+            newY = getPositionY() + velocity * duration * Math.sin(getBacteriaDirection());
         }
         setPositionX(normalizedPositionX(newX));
         setPositionY(normalizedPositionY(newY));
-        double newDirection = asNormalizedRadians(getRobotDirection() + angularVelocity * duration);
-        setRobotDirection(newDirection);
-
+        double newDirection = asNormalizedRadians(getBacteriaDirection() + angularVelocity * duration);
+        setBacteriaDirection(newDirection);
     }
 
 
@@ -192,14 +191,14 @@ public class Bacteria implements Entity {
         double angleToTarget = angleTo(getPositionX(), getPositionY(),
                 target.getX(), target.getY());
         double angularVelocity = 0;
-        if (angleToTarget > getRobotDirection()) {
+        if (angleToTarget > getBacteriaDirection()) {
             angularVelocity = Bacteria.maxAngularVelocity;
         }
-        if (angleToTarget < getRobotDirection()) {
+        if (angleToTarget < getBacteriaDirection()) {
             angularVelocity = -Bacteria.maxAngularVelocity;
         }
 
-        moveRobot(velocity, angularVelocity, 10);
+        moveBacteria(velocity, angularVelocity, 10);
 
     }
 
