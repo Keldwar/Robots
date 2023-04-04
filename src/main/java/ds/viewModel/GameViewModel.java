@@ -47,7 +47,8 @@ public class GameViewModel {
             @Override
             public void mouseClicked(MouseEvent e) {
                 System.out.println(e.getPoint());
-                gameModel.setTarget(new Point((int) (e.getPoint().x / 0.8), (int) (e.getPoint().y / 0.8)));
+                Point point = new Point((int) (e.getPoint().x / 0.8), (int) (e.getPoint().y / 0.8));
+                gameModel.setTarget(point);
                 getGameView().repaint();
             }
         });

@@ -3,6 +3,7 @@ package ds.model;
 
 import java.awt.*;
 import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeSupport;
 
 public class Bacteria implements Entity {
     private double positionX;
@@ -202,6 +203,16 @@ public class Bacteria implements Entity {
 
     }
 
+    @Override
+    public void onStart(PropertyChangeSupport publisher) {
+        publisher.addPropertyChangeListener(this);
+    }
+
+    @Override
+    public void onFinish(PropertyChangeSupport publisher) {
+        publisher.removePropertyChangeListener(this);
+    }
+
     private void onTargetAchieved() {
         this.setTarget(new Point((int) (Math.random() * dimension.width), (int) (Math.random() * dimension.height)));
         this.satiety += 20;
@@ -212,8 +223,12 @@ public class Bacteria implements Entity {
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        Point point = (Point) evt.getNewValue();
-        setTarget(point);
+        if (evt.getPropertyName().equals("new point"))
+            setTarget((Point) evt.getNewValue());
+        if (evt.getPropertyName().equals("change satiety"))
+            changeSatiety((int) evt.getNewValue());
+        if (evt.getPropertyName().equals("set dimension"))
+            setDimension((Dimension) evt.getNewValue());
     }
 
     public Mood getMood() {
