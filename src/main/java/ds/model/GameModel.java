@@ -1,8 +1,6 @@
 package ds.model;
 
 import java.awt.*;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 import java.util.List;
@@ -10,13 +8,14 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class GameModel {
-    private List<Entity> entities;
-    private PropertyChangeSupport support;
-    private final java.util.Timer timer = initTimer();
+    private final List<Entity> entities;
+    private final PropertyChangeSupport support;
+
     public GameModel() {
         this.support = new PropertyChangeSupport(this);
         this.entities = initStateOfBacterias(20);
 
+        Timer timer = initTimer();
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
@@ -35,7 +34,7 @@ public class GameModel {
     }
 
     public Dimension getDimension() {
-        return ((Bacteria)entities.get(0)).getDimension();
+        return ((Bacteria) entities.get(0)).getDimension();
     }
 
     public void updateModel() {
@@ -43,6 +42,7 @@ public class GameModel {
             entity.update();
         }
     }
+
     public List<Entity> getEntities() {
         return entities;
     }

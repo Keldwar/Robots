@@ -14,5 +14,6 @@ public abstract class Drawer {
     }
 
     public abstract void draw(Graphics2D g, Entity entity);
+
     public abstract Class<?> getDrawingType();
 }

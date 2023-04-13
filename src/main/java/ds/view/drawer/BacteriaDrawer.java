@@ -9,30 +9,34 @@ import java.awt.geom.AffineTransform;
 
 public class BacteriaDrawer extends Drawer {
     @Override
-    public void draw(Graphics2D g, Entity entity)
-    {
+    public void draw(Graphics2D g, Entity entity) {
         Bacteria bacteria = (Bacteria) entity;
-        int robotCenterX = (int) Math.round(bacteria.getPositionX());
-        int robotCenterY = (int) Math.round(bacteria.getPositionY());
-        AffineTransform t = AffineTransform.getRotateInstance(bacteria.getBacteriaDirection(), robotCenterX, robotCenterY);
-        g.setTransform(t);
+        AffineTransform oldTransform = g.getTransform();
+        int bacteriaCenterX = (int) (Math.round(bacteria.getPositionX()));
+        int bacteriaCenterY = (int) (Math.round(bacteria.getPositionY()));
+        AffineTransform l = new AffineTransform(oldTransform);
+        AffineTransform t = AffineTransform.getRotateInstance(bacteria.getBacteriaDirection(), bacteriaCenterX, bacteriaCenterY);
+        l.concatenate(t);
+
+        g.setTransform(l);
+
         g.setColor(bacteria.getMood().getColor());
         if (bacteria.getMood().equals(Mood.HUNGRY)) {
-            fillOval(g, robotCenterX, robotCenterY, 30, 10);
+            fillOval(g, bacteriaCenterX, bacteriaCenterY, 30, 10);
             g.setColor(Color.BLACK);
-            drawOval(g, robotCenterX, robotCenterY, 30, 10);
+            drawOval(g, bacteriaCenterX, bacteriaCenterY, 30, 10);
             g.setColor(Color.WHITE);
-        }
-        else {
-            fillOval(g, robotCenterX, robotCenterY, 30, 15);
+        } else {
+            fillOval(g, bacteriaCenterX, bacteriaCenterY, 30, 15);
             g.setColor(Color.BLACK);
-            drawOval(g, robotCenterX, robotCenterY, 30, 15);
+            drawOval(g, bacteriaCenterX, bacteriaCenterY, 30, 15);
             g.setColor(Color.WHITE);
         }
 
-        fillOval(g, robotCenterX  + 10, robotCenterY, 5, 5);
+        fillOval(g, bacteriaCenterX + 10, bacteriaCenterY, 5, 5);
         g.setColor(Color.BLACK);
-        drawOval(g, robotCenterX  + 10, robotCenterY, 5, 5);
+        drawOval(g, bacteriaCenterX + 10, bacteriaCenterY, 5, 5);
+        g.setTransform(oldTransform);
     }
 
     @Override

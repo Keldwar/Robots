@@ -4,7 +4,6 @@ import ds.view.GameView;
 import ds.view.GameWindow;
 import ds.model.GameModel;
 
-import java.awt.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.MouseAdapter;
@@ -14,8 +13,8 @@ import java.util.TimerTask;
 
 
 public class GameViewModel {
-    private GameModel gameModel;
-    private GameWindow gameWindow;
+    private final GameModel gameModel;
+    private final GameWindow gameWindow;
     private final java.util.Timer timer = initTimer();
 
     private static java.util.Timer initTimer() {
@@ -47,8 +46,7 @@ public class GameViewModel {
             @Override
             public void mouseClicked(MouseEvent e) {
                 System.out.println(e.getPoint());
-                Point point = new Point((int) (e.getPoint().x / 0.8), (int) (e.getPoint().y / 0.8));
-                gameModel.setTarget(point);
+                gameModel.setTarget(e.getPoint());
                 getGameView().repaint();
             }
         });

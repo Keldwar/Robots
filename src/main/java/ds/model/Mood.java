@@ -5,12 +5,11 @@ import java.util.List;
 import java.util.Random;
 
 public enum Mood {
-    CALM(0, Color.BLUE),
-    EVIL(1, Color.RED),
-    ENAMORED(2, Color.MAGENTA),
-    HUNGRY(3, Color.YELLOW),
-    DEAD(4, Color.BLACK);
-    private final int state;
+    CALM(Color.BLUE),
+    EVIL(Color.RED),
+    ENAMORED(Color.MAGENTA),
+    HUNGRY(Color.YELLOW),
+    DEAD(Color.BLACK);
     private final Color color;
     private static final Random RANDOM = new Random();
     private static final List<Mood> values = List.of(values());
@@ -19,8 +18,7 @@ public enum Mood {
         return values.get(RANDOM.nextInt(values().length - 2));
     }
 
-    Mood(int state, Color color) {
-        this.state = state;
+    Mood(Color color) {
         this.color = color;
     }
 
