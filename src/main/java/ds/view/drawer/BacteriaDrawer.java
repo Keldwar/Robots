@@ -22,20 +22,20 @@ public class BacteriaDrawer extends Drawer {
 
         g.setColor(bacteria.getMood().getColor());
         if (bacteria.getMood().equals(Mood.HUNGRY)) {
-            fillOval(g, bacteriaCenterX, bacteriaCenterY, 30, 10);
+            fillOval(g, bacteriaCenterX, bacteriaCenterY, 25, 10);
             g.setColor(Color.BLACK);
-            drawOval(g, bacteriaCenterX, bacteriaCenterY, 30, 10);
+            drawOval(g, bacteriaCenterX, bacteriaCenterY, 25, 10);
             g.setColor(Color.WHITE);
         } else {
-            fillOval(g, bacteriaCenterX, bacteriaCenterY, 30, 15);
+            fillOval(g, bacteriaCenterX, bacteriaCenterY, 25, 15);
             g.setColor(Color.BLACK);
-            drawOval(g, bacteriaCenterX, bacteriaCenterY, 30, 15);
+            drawOval(g, bacteriaCenterX, bacteriaCenterY, 25, 15);
             g.setColor(Color.WHITE);
         }
 
-        fillOval(g, bacteriaCenterX + 10, bacteriaCenterY, 5, 5);
+        fillOval(g, bacteriaCenterX + 7, bacteriaCenterY, 5, 5);
         g.setColor(Color.BLACK);
-        drawOval(g, bacteriaCenterX + 10, bacteriaCenterY, 5, 5);
+        drawOval(g, bacteriaCenterX + 7, bacteriaCenterY, 5, 5);
         g.setTransform(oldTransform);
     }
 

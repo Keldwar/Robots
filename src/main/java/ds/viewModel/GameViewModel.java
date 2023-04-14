@@ -31,7 +31,7 @@ public class GameViewModel {
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
-                gameModel.setDimension(gameWindow.getSize());
+                gameModel.setDimension(gameWindow.getGameView().getSize());
                 getGameView().updateView();
             }
         }, 0, 50);

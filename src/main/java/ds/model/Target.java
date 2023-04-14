@@ -40,4 +40,8 @@ public class Target {
     protected Point getTargetPosition() {
         return new Point(getX(), getY());
     }
+
+    public boolean isPositionCorrect(Dimension dimension) {
+        return this.x <= dimension.width && this.y <= dimension.height;
+    }
 }

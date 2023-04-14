@@ -23,6 +23,9 @@ public class GameView extends JPanel {
         map.put(new TargetDrawer().getDrawingType(), new TargetDrawer());
         this.gameModel = gameModel;
         setDoubleBuffered(true);
+        this.setPreferredSize(new Dimension(400, 400));
+        this.setSize(new Dimension(400, 400));
+        this.setBorder(BorderFactory.createLineBorder(Color.GREEN));
     }
 
     public void updateView() {

@@ -8,15 +8,18 @@ import java.beans.PropertyChangeSupport;
 public class Bacteria implements Entity {
     private double positionX;
     private double positionY;
+    private volatile double bacteriaDirection;
     private Target target;
-    private Dimension dimension;
+
     private Mood mood;
     private int satiety;
     public static final double maxVelocity = 0.05;
     public static final double maxAngularVelocity = 0.005;
     private boolean isAlive;
-    private volatile double bacteriaDirection;
     private boolean isTargetAchieved;
+    private Dimension dimension;
+    private static final int INITIAL_SATIETY = 50;
+    private static final int MAX_SATIETY = 100;
 
     public Bacteria(double x, double y) {
         this.positionX = x;
@@ -25,7 +28,7 @@ public class Bacteria implements Entity {
         this.bacteriaDirection = Math.random() * 10;
         this.dimension = new Dimension(400, 400);
         this.mood = Mood.randomMood();
-        this.satiety = (int) (50 + Math.random() * 100);
+        this.satiety = (int) (INITIAL_SATIETY + Math.random() * (MAX_SATIETY - INITIAL_SATIETY));
         this.isAlive = true;
     }
 
@@ -50,6 +53,9 @@ public class Bacteria implements Entity {
 
     public void setDimension(Dimension dimension) {
         this.dimension = dimension;
+        if (!target.isPositionCorrect(dimension)) {
+            target = new Target((int) (Math.random() * dimension.width), (int) (Math.random() * dimension.height));
+        }
     }
 
     public Dimension getDimension() {
@@ -122,9 +128,7 @@ public class Bacteria implements Entity {
     private static double applyLimits(double value, double min, double max) {
         if (value < min)
             return min;
-        if (value > max)
-            return max;
-        return value;
+        return Math.min(value, max);
     }
 
     public Target getTarget() {
@@ -187,7 +191,6 @@ public class Bacteria implements Entity {
 
             return;
         }
-        double velocity = Bacteria.maxVelocity;
         double angleToTarget = angleTo(getPositionX(), getPositionY(),
                 target.getX(), target.getY());
         double angularVelocity = 0;
@@ -198,7 +201,7 @@ public class Bacteria implements Entity {
             angularVelocity = -Bacteria.maxAngularVelocity;
         }
 
-        moveBacteria(velocity, angularVelocity, 10);
+        moveBacteria(Bacteria.maxVelocity, angularVelocity, 10);
 
     }
 
