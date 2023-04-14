@@ -1,5 +1,6 @@
 package ds;
 
+import com.formdev.flatlaf.FlatLightLaf;
 import ds.view.GameView;
 import ds.view.GameWindow;
 import ds.model.GameModel;
@@ -10,8 +11,9 @@ import java.awt.*;
 
 public class Main {
     public static void main(String[] args) {
+        FlatLightLaf.setup();
         try {
-            UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
+            UIManager.setLookAndFeel("com.formdev.flatlaf.FlatLightLaf");
         } catch (Exception e) {
             e.printStackTrace();
         }
