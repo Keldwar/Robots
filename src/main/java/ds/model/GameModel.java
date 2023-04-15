@@ -13,7 +13,7 @@ public class GameModel {
 
     public GameModel() {
         this.support = new PropertyChangeSupport(this);
-        this.entities = initStateOfBacterias(20);
+        this.entities = initStateOfBacterias(1);
 
         Timer timer = initTimer();
         timer.schedule(new TimerTask() {
@@ -40,7 +40,10 @@ public class GameModel {
     public void updateModel() {
         for (Entity entity : entities) {
             entity.update();
+            if (!entity.isAlive())
+                entity.onFinish(support);
         }
+        entities.removeIf(entity -> !entity.isAlive());
     }
 
     public List<Entity> getEntities() {

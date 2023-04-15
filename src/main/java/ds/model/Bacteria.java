@@ -1,6 +1,9 @@
 package ds.model;
 
 
+import ds.model.commands.Command;
+import ds.model.commands.MoveBacteriaCommand;
+
 import java.awt.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeSupport;
@@ -10,11 +13,13 @@ public class Bacteria implements Entity {
     private double positionY;
     private volatile double bacteriaDirection;
     private Target target;
-
     private Mood mood;
+    private Command currentCommand;
+    private Genome genome;
     private int satiety;
     public static final double maxVelocity = 0.05;
     public static final double maxAngularVelocity = 0.005;
+    public static final int duration = 10;
     private boolean isAlive;
     private boolean isTargetAchieved;
     private Dimension dimension;
@@ -30,6 +35,8 @@ public class Bacteria implements Entity {
         this.mood = Mood.randomMood();
         this.satiety = (int) (INITIAL_SATIETY + Math.random() * (MAX_SATIETY - INITIAL_SATIETY));
         this.isAlive = true;
+        this.currentCommand = new MoveBacteriaCommand();
+        this.genome = new Genome();
     }
 
     private void setRandomMood() {
@@ -86,51 +93,6 @@ public class Bacteria implements Entity {
         this.bacteriaDirection = bacteriaDirection;
     }
 
-    private static double distance(double x1, double y1, double x2, double y2) {
-        double diffX = x1 - x2;
-        double diffY = y1 - y2;
-        return Math.sqrt(diffX * diffX + diffY * diffY);
-    }
-
-    private static double angleTo(double fromX, double fromY, double toX, double toY) {
-        double diffX = toX - fromX;
-        double diffY = toY - fromY;
-
-        return asNormalizedRadians(Math.atan2(diffY, diffX));
-    }
-
-    private static double asNormalizedRadians(double angle) {
-        while (angle < 0) {
-            angle += 2 * Math.PI;
-        }
-        while (angle >= 2 * Math.PI) {
-            angle -= 2 * Math.PI;
-        }
-        return angle;
-    }
-
-    private double normalizedPositionX(double x) {
-        if (x < 0)
-            return 0;
-        if (x > dimension.width)
-            return dimension.width;
-        return x;
-    }
-
-    private double normalizedPositionY(double y) {
-        if (y < 0)
-            return 0;
-        if (y > dimension.height)
-            return dimension.height;
-        return y;
-    }
-
-    private static double applyLimits(double value, double min, double max) {
-        if (value < min)
-            return min;
-        return Math.min(value, max);
-    }
-
     public Target getTarget() {
         return target;
     }
@@ -146,28 +108,6 @@ public class Bacteria implements Entity {
         this.target.setTargetPosition(point);
     }
 
-    private void moveBacteria(double velocity, double angularVelocity, double duration) {
-        velocity = applyLimits(velocity, 0, Bacteria.maxVelocity);
-        angularVelocity = applyLimits(angularVelocity, -Bacteria.maxAngularVelocity, Bacteria.maxAngularVelocity);
-        double newX = getPositionX() + velocity / angularVelocity *
-                (Math.sin(getBacteriaDirection() + angularVelocity * duration) -
-                        Math.sin(getBacteriaDirection()));
-        if (!Double.isFinite(newX)) {
-            newX = getPositionX() + velocity * duration * Math.cos(getBacteriaDirection());
-        }
-        double newY = getPositionY() - velocity / angularVelocity *
-                (Math.cos(getBacteriaDirection() + angularVelocity * duration) -
-                        Math.cos(getBacteriaDirection()));
-        if (!Double.isFinite(newY)) {
-            newY = getPositionY() + velocity * duration * Math.sin(getBacteriaDirection());
-        }
-        setPositionX(normalizedPositionX(newX));
-        setPositionY(normalizedPositionY(newY));
-        double newDirection = asNormalizedRadians(getBacteriaDirection() + angularVelocity * duration);
-        setBacteriaDirection(newDirection);
-    }
-
-
     @Override
     public void update() {
         if (!this.isAlive) {
@@ -182,27 +122,15 @@ public class Bacteria implements Entity {
             this.setMood(Mood.HUNGRY);
 
         }
-        double distance = distance(target.getX(), target.getY(),
-                getPositionX(), getPositionY());
-        this.isTargetAchieved = false;
-        if (distance < 0.5) {
-            this.isTargetAchieved = true;
-            this.onTargetAchieved();
-
-            return;
-        }
-        double angleToTarget = angleTo(getPositionX(), getPositionY(),
-                target.getX(), target.getY());
-        double angularVelocity = 0;
-        if (angleToTarget > getBacteriaDirection()) {
-            angularVelocity = Bacteria.maxAngularVelocity;
-        }
-        if (angleToTarget < getBacteriaDirection()) {
-            angularVelocity = -Bacteria.maxAngularVelocity;
+        if (currentCommand.isCompleted()) {
+            currentCommand = nextCommand();
         }
 
-        moveBacteria(Bacteria.maxVelocity, angularVelocity, 10);
+        currentCommand.execution(this);
+    }
 
+    public Command nextCommand() {
+        return genome.getNextCommand();
     }
 
     @Override
@@ -215,12 +143,17 @@ public class Bacteria implements Entity {
         publisher.removePropertyChangeListener(this);
     }
 
-    private void onTargetAchieved() {
+    public void onTargetAchieved() {
         this.setTarget(new Point((int) (Math.random() * dimension.width), (int) (Math.random() * dimension.height)));
         this.satiety += 20;
         if (this.satiety > 50) {
             this.setRandomMood();
         }
+    }
+
+    @Override
+    public boolean isAlive() {
+        return isAlive;
     }
 
     @Override

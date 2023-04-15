@@ -9,4 +9,6 @@ public interface Entity extends PropertyChangeListener {
     void onStart(PropertyChangeSupport publisher);
 
     void onFinish(PropertyChangeSupport publisher);
+
+    boolean isAlive();
 }
