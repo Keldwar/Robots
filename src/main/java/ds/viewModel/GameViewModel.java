@@ -13,8 +13,8 @@ import java.util.TimerTask;
 
 
 public class GameViewModel {
-    private GameModel gameModel;
-    private GameWindow gameWindow;
+    private final GameModel gameModel;
+    private final GameWindow gameWindow;
     private final java.util.Timer timer = initTimer();
 
     private static java.util.Timer initTimer() {
@@ -31,7 +31,7 @@ public class GameViewModel {
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
-                gameModel.setDimension(gameWindow.getSize());
+                gameModel.setDimension(gameWindow.getGameView().getSize());
                 getGameView().updateView();
             }
         }, 0, 50);
@@ -45,6 +45,7 @@ public class GameViewModel {
         gameWindow.getGameView().addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
+                System.out.println(e.getPoint());
                 gameModel.setTarget(e.getPoint());
                 getGameView().repaint();
             }
