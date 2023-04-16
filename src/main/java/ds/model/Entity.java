@@ -4,7 +4,7 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
 public interface Entity extends PropertyChangeListener {
-    void update();
+    void update(GameState gameState);
 
     void onStart(PropertyChangeSupport publisher);
 

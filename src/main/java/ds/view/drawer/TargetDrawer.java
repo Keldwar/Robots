@@ -3,6 +3,7 @@ package ds.view.drawer;
 import ds.model.Bacteria;
 import ds.model.Entity;
 import ds.model.Target;
+import ds.model.TargetType;
 
 import java.awt.*;
 

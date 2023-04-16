@@ -1,6 +1,7 @@
 package ds.model.commands;
 
 import ds.model.Bacteria;
+import ds.model.GameState;
 import ds.model.Target;
 
 import static ds.model.Bacteria.duration;
@@ -9,12 +10,13 @@ public class MoveBacteriaCommand implements Command {
     private boolean isCompleted;
 
     public MoveBacteriaCommand() {
+        System.out.println("Move command execution");
         this.isCompleted = false;
     }
 
     @Override
-    public void execution(Bacteria bacteria) {
-        move(bacteria);
+    public void execution(Bacteria bacteria, GameState gameState) {
+        move(bacteria, gameState);
     }
 
     @Override
@@ -22,13 +24,14 @@ public class MoveBacteriaCommand implements Command {
         return this.isCompleted;
     }
 
-    public void move(Bacteria bacteria) {
+    public void move(Bacteria bacteria, GameState gameState) {
         Target target = bacteria.getTarget();
         double distance = distance(target.getX(), target.getY(), bacteria.getPositionX(), bacteria.getPositionY());
 
         if (distance < 0.5) {
             this.isCompleted = true;
             bacteria.onTargetAchieved();
+            //gameState.getTargetList().remove(bacteria.getTarget());
             return;
         }
         double angleToTarget = angleTo(bacteria.getPositionX(), bacteria.getPositionY(), target.getX(), target.getY());

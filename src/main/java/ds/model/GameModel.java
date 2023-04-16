@@ -1,5 +1,7 @@
 package ds.model;
 
+import org.apache.commons.collections4.ListUtils;
+
 import java.awt.*;
 import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
@@ -10,10 +12,12 @@ import java.util.TimerTask;
 public class GameModel {
     private final List<Entity> entities;
     private final PropertyChangeSupport support;
+    private final GameState gameState;
 
     public GameModel() {
         this.support = new PropertyChangeSupport(this);
-        this.entities = initStateOfBacterias(1);
+        this.entities = initStateOfBacterias(5);
+        this.gameState = new GameState();
 
         Timer timer = initTimer();
         timer.schedule(new TimerTask() {
@@ -30,6 +34,7 @@ public class GameModel {
     }
 
     public void setDimension(Dimension dimension) {
+        gameState.setDimension(dimension);
         support.firePropertyChange("set dimension", null, dimension);
     }
 
@@ -39,7 +44,7 @@ public class GameModel {
 
     public void updateModel() {
         for (Entity entity : entities) {
-            entity.update();
+            entity.update(gameState);
             if (!entity.isAlive())
                 entity.onFinish(support);
         }
@@ -47,7 +52,7 @@ public class GameModel {
     }
 
     public List<Entity> getEntities() {
-        return entities;
+        return entities; //ListUtils.union(entities, gameState.getTargetList());
     }
 
     public void setTarget(Point point) {

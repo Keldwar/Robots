@@ -35,7 +35,7 @@ public class Bacteria implements Entity {
         this.mood = Mood.randomMood();
         this.satiety = (int) (INITIAL_SATIETY + Math.random() * (MAX_SATIETY - INITIAL_SATIETY));
         this.isAlive = true;
-        this.currentCommand = new MoveBacteriaCommand();
+        this.currentCommand = null; //new MoveBacteriaCommand();
         this.genome = new Genome();
     }
 
@@ -107,9 +107,12 @@ public class Bacteria implements Entity {
         }
         this.target.setTargetPosition(point);
     }
+    public void setTarget(Target target) {
+        this.target = target;
+    }
 
     @Override
-    public void update() {
+    public void update(GameState gameState) {
         if (!this.isAlive) {
             this.setMood(Mood.DEAD);
 
@@ -122,11 +125,13 @@ public class Bacteria implements Entity {
             this.setMood(Mood.HUNGRY);
 
         }
-        if (currentCommand.isCompleted()) {
+        if (currentCommand != null) {
+            if (currentCommand.isCompleted())
+                currentCommand = nextCommand();
+        } else
             currentCommand = nextCommand();
-        }
 
-        currentCommand.execution(this);
+        currentCommand.execution(this, gameState);
     }
 
     public Command nextCommand() {
@@ -145,7 +150,7 @@ public class Bacteria implements Entity {
 
     public void onTargetAchieved() {
         this.setTarget(new Point((int) (Math.random() * dimension.width), (int) (Math.random() * dimension.height)));
-        this.satiety += 20;
+        //this.satiety += target.getTargetType().damage;
         if (this.satiety > 50) {
             this.setRandomMood();
         }
