@@ -5,15 +5,18 @@ import java.awt.*;
 public class Target {
     private volatile int x;
     private volatile int y;
+    private final TargetType type;
 
     public Target() {
         this.x = 150;
         this.y = 100;
+        this.type = TargetType.randomTargetType();
     }
 
     public Target(int x, int y) {
         this.x = x;
         this.y = y;
+        this.type = TargetType.randomTargetType();
     }
 
     public void setX(int x) {
@@ -43,5 +46,9 @@ public class Target {
 
     public boolean isPositionCorrect(Dimension dimension) {
         return this.x <= dimension.width && this.y <= dimension.height;
+    }
+
+    public TargetType getType() {
+        return type;
     }
 }

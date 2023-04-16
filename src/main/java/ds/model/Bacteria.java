@@ -2,7 +2,6 @@ package ds.model;
 
 
 import ds.model.commands.Command;
-import ds.model.commands.MoveBacteriaCommand;
 
 import java.awt.*;
 import java.beans.PropertyChangeEvent;
@@ -21,7 +20,6 @@ public class Bacteria implements Entity {
     public static final double maxAngularVelocity = 0.005;
     public static final int duration = 10;
     private boolean isAlive;
-    private boolean isTargetAchieved;
     private Dimension dimension;
     private static final int INITIAL_SATIETY = 50;
     private static final int MAX_SATIETY = 100;
@@ -107,6 +105,7 @@ public class Bacteria implements Entity {
         }
         this.target.setTargetPosition(point);
     }
+
     public void setTarget(Target target) {
         this.target = target;
     }
@@ -150,7 +149,7 @@ public class Bacteria implements Entity {
 
     public void onTargetAchieved() {
         this.setTarget(new Point((int) (Math.random() * dimension.width), (int) (Math.random() * dimension.height)));
-        //this.satiety += target.getTargetType().damage;
+        this.satiety += target.getType().damage;
         if (this.satiety > 50) {
             this.setRandomMood();
         }
