@@ -17,8 +17,9 @@ public class Genome {
     public Genome() {
         this.numberOfGen = 0;
         this.genes = new int[GENES_LIMIT];
-        for (int i = 0; i < GENES_LIMIT; i++)
+        for (int i = 0; i < GENES_LIMIT; i++) {
             this.genes[i] = (int) (Math.random() * GENES_LIMIT);
+        }
     }
 
     private static Map<Integer, CommandEnum> initCommandByIndex() {
@@ -26,6 +27,8 @@ public class Genome {
         for (int i = 0; i < 8; i++) {
             initMap.put(i, CommandEnum.MOVE_BACTERIA);
             initMap.put(i + 8, CommandEnum.LOOK_AROUND);
+            initMap.put(i + 16, CommandEnum.NEUTRALIZE_POISON);
+            initMap.put(i + 24, CommandEnum.INCREASE_VELOCITY);
         }
 
         return initMap;
@@ -64,11 +67,10 @@ public class Genome {
         }
     }
 
-    public Command getNextCommand() {
+    public Command getNextCommand(int transition) {
         try {
-            int currentNum = numberOfGen;
-            numberOfGen = (numberOfGen + 1) % 16;//genes[commandByIndex.get(currentNum).step];
-            return CommandFactory.getCommand(COMMAND_BY_INDEX.get(currentNum));
+            numberOfGen = (transition) % 32;//genes[commandByIndex.get(currentNum).step];
+            return CommandFactory.getCommand(COMMAND_BY_INDEX.get(genes[numberOfGen] % 32));
         } catch (Exception e) {
             e.printStackTrace();
         }

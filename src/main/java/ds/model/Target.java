@@ -5,7 +5,7 @@ import java.awt.*;
 public class Target {
     private volatile int x;
     private volatile int y;
-    private final TargetType type;
+    private TargetType type;
 
     public Target() {
         this.x = 150;
@@ -50,5 +50,9 @@ public class Target {
 
     public TargetType getType() {
         return type;
+    }
+
+    public void setType(TargetType type) {
+        this.type = type;
     }
 }

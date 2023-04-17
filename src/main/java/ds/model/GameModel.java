@@ -1,6 +1,5 @@
 package ds.model;
 
-import org.apache.commons.collections4.ListUtils;
 
 import java.awt.*;
 import java.beans.PropertyChangeSupport;
@@ -10,13 +9,14 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class GameModel {
-    private final List<Entity> entities;
+    private static final int MIN_AMOUNT_BACTERIAS = 2;
+    private List<Entity> entities;
     private final PropertyChangeSupport support;
     private final GameState gameState;
 
     public GameModel() {
         this.support = new PropertyChangeSupport(this);
-        this.entities = initStateOfBacterias(5);
+        this.entities = initStateOfBacterias(3);
         this.gameState = new GameState();
 
         Timer timer = initTimer();
@@ -49,6 +49,32 @@ public class GameModel {
                 entity.onFinish(support);
         }
         entities.removeIf(entity -> !entity.isAlive());
+        if (entities.size() <= MIN_AMOUNT_BACTERIAS) {
+            startNewGeneration();
+        }
+    }
+
+    private void startNewGeneration() {
+        List<Entity> newEntities = new ArrayList<>();
+
+        for (int i = 0; i <= MIN_AMOUNT_BACTERIAS; i++) {
+            int j = i % entities.size();
+
+            Bacteria bacteria1 = (Bacteria) entities.get(j);
+            Bacteria bacteria2 = (Bacteria) entities.get((j + 1) % entities.size());
+
+            Genome genome1 = Genome.combineGenomes(bacteria1.getGenome(), bacteria2.getGenome());
+            genome1.mutateGenome();
+            Bacteria newBacteria1 = new Bacteria(genome1);
+            newBacteria1.onStart(support);
+            newEntities.add(newBacteria1);
+        }
+
+        for (Entity entity : entities) {
+            entity.onFinish(support);
+        }
+        entities.clear();
+        this.entities = newEntities;
     }
 
     public List<Entity> getEntities() {

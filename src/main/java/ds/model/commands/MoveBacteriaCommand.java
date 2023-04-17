@@ -3,11 +3,25 @@ package ds.model.commands;
 import ds.model.Bacteria;
 import ds.model.GameState;
 import ds.model.Target;
+import ds.model.TargetType;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import static ds.model.Bacteria.duration;
 
 public class MoveBacteriaCommand implements Command {
     private boolean isCompleted;
+    public static final Map<TargetType, Integer> stepByTargetType = initMoveBacteria();
+
+    private static Map<TargetType, Integer> initMoveBacteria() {
+        Map<TargetType, Integer> result = new HashMap<>();
+        result.put(TargetType.FOOD, 1);
+        result.put(TargetType.POISON, 2);
+        result.put(TargetType.NONE, 3);
+
+        return result;
+    }
 
     public MoveBacteriaCommand() {
         System.out.println("Move command execution");
@@ -24,6 +38,11 @@ public class MoveBacteriaCommand implements Command {
         return this.isCompleted;
     }
 
+    @Override
+    public int getNextStep(Bacteria bacteria) {
+        return stepByTargetType.get(bacteria.getTarget().getType());
+    }
+
     public void move(Bacteria bacteria, GameState gameState) {
         Target target = bacteria.getTarget();
         double distance = distance(target.getX(), target.getY(), bacteria.getPositionX(), bacteria.getPositionY());
@@ -31,6 +50,7 @@ public class MoveBacteriaCommand implements Command {
         if (distance < 0.5) {
             this.isCompleted = true;
             bacteria.onTargetAchieved();
+            System.out.println(bacteria.getSatiety());
             //gameState.getTargetList().remove(bacteria.getTarget());
             return;
         }

@@ -13,8 +13,10 @@ public class TargetDrawer extends Drawer {
         Target target = ((Bacteria) entity).getTarget();
         if (target.getType() == TargetType.FOOD) {
             g.setColor(Color.GREEN);
-        } else {
+        } else if (target.getType() == TargetType.POISON) {
             g.setColor(Color.RED);
+        } else {
+            g.setColor(Color.BLUE);
         }
         fillOval(g, target.getX(), target.getY(), 5, 5);
         g.setColor(Color.BLACK);

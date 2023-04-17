@@ -8,6 +8,7 @@ import java.util.List;
 
 public class LookAroundCommand implements Command {
     private boolean isCompleted = false;
+
     @Override
     public void execution(Bacteria bacteria, GameState gameState) {
         System.out.println("Look Around command execution");
@@ -18,6 +19,11 @@ public class LookAroundCommand implements Command {
     @Override
     public boolean isCompleted() {
         return isCompleted;
+    }
+
+    @Override
+    public int getNextStep(Bacteria bacteria) {
+        return 1;
     }
 
     private Target chooseTarget(Bacteria bacteria, GameState gameState) {

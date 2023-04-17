@@ -14,9 +14,10 @@ public class Bacteria implements Entity {
     private Target target;
     private Mood mood;
     private Command currentCommand;
+    private int curCom;
     private Genome genome;
     private int satiety;
-    public static final double maxVelocity = 0.05;
+    public static double maxVelocity = 0.05;
     public static final double maxAngularVelocity = 0.005;
     public static final int duration = 10;
     private boolean isAlive;
@@ -35,6 +36,11 @@ public class Bacteria implements Entity {
         this.isAlive = true;
         this.currentCommand = null; //new MoveBacteriaCommand();
         this.genome = new Genome();
+    }
+
+    public Bacteria(Genome genome) {
+        this(10, 10);
+        this.genome = genome;
     }
 
     private void setRandomMood() {
@@ -125,16 +131,21 @@ public class Bacteria implements Entity {
 
         }
         if (currentCommand != null) {
-            if (currentCommand.isCompleted())
-                currentCommand = nextCommand();
+            int t = curCom + currentCommand.getNextStep(this);
+            if (currentCommand.isCompleted()) {
+                currentCommand = nextCommand(t);
+                System.out.println(curCom);
+                System.out.println(t);
+                curCom = t;
+            }
         } else
-            currentCommand = nextCommand();
+            currentCommand = nextCommand(0);
 
         currentCommand.execution(this, gameState);
     }
 
-    public Command nextCommand() {
-        return genome.getNextCommand();
+    public Command nextCommand(int transition) {
+        return genome.getNextCommand(transition);
     }
 
     @Override
@@ -148,7 +159,7 @@ public class Bacteria implements Entity {
     }
 
     public void onTargetAchieved() {
-        this.setTarget(new Point((int) (Math.random() * dimension.width), (int) (Math.random() * dimension.height)));
+        this.setTarget(new Target((int) (Math.random() * dimension.width), (int) (Math.random() * dimension.height)));
         this.satiety += target.getType().damage;
         if (this.satiety > 50) {
             this.setRandomMood();
@@ -172,5 +183,13 @@ public class Bacteria implements Entity {
 
     public Mood getMood() {
         return mood;
+    }
+
+    public void increaseVelocity(double v) {
+        maxVelocity += v;
+    }
+
+    public Genome getGenome() {
+        return genome;
     }
 }

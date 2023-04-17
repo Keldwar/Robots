@@ -4,7 +4,8 @@ import java.util.Random;
 
 public enum TargetType {
     FOOD(10),
-    POISON(-10);
+    POISON(-10),
+    NONE(0);
     public final int damage;
 
     TargetType(int damage) {
