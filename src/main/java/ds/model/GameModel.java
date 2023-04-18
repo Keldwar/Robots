@@ -3,20 +3,20 @@ package ds.model;
 
 import java.awt.*;
 import java.beans.PropertyChangeSupport;
-import java.util.ArrayList;
+import java.util.*;
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
 
 public class GameModel {
     private static final int MIN_AMOUNT_BACTERIAS = 2;
-    private List<Entity> entities;
+    private static final int AMOUNT_OF_BACTERIAS = 3;
+    private static final int AMOUNT_OF_TARGETS = 3;
+    private final Map<Class<? extends Entity>, Set<Entity>> entitiesByClass;
     private final PropertyChangeSupport support;
     private final GameState gameState;
 
     public GameModel() {
         this.support = new PropertyChangeSupport(this);
-        this.entities = initStateOfBacterias(3);
+        this.entitiesByClass = initEntitiesByClass();
         this.gameState = new GameState();
 
         Timer timer = initTimer();
@@ -29,6 +29,13 @@ public class GameModel {
         }, 0, 3000);
     }
 
+    private Map<Class<? extends Entity>, Set<Entity>> initEntitiesByClass() {
+        Map<Class<? extends Entity>, Set<Entity>> initEntities = new LinkedHashMap<>();
+        initEntities.put(Bacteria.class, initStateOfBacterias(AMOUNT_OF_BACTERIAS));
+        initEntities.put(Target.class, initStateOfTargets(AMOUNT_OF_TARGETS));
+        return initEntities;
+    }
+
     private static java.util.Timer initTimer() {
         return new Timer("satiety generator", true);
     }
@@ -39,23 +46,27 @@ public class GameModel {
     }
 
     public Dimension getDimension() {
-        return ((Bacteria) entities.get(0)).getDimension();
+        return new Dimension(400, 400);
     }
 
     public void updateModel() {
-        for (Entity entity : entities) {
-            entity.update(gameState);
-            if (!entity.isAlive())
-                entity.onFinish(support);
+        for (Map.Entry<Class<? extends Entity>, Set<Entity>> entry : this.entitiesByClass.entrySet()) {
+            for (Entity entity : entry.getValue()) {
+                entity.update(gameState);
+                if (!entity.isAlive())
+                    entity.onFinish(support);
+            }
+            entry.getValue().removeIf(entity -> !entity.isAlive());
         }
-        entities.removeIf(entity -> !entity.isAlive());
-        if (entities.size() <= MIN_AMOUNT_BACTERIAS) {
+
+        if (entitiesByClass.get(Bacteria.class).size() <= MIN_AMOUNT_BACTERIAS) {
             startNewGeneration();
         }
     }
 
     private void startNewGeneration() {
-        List<Entity> newEntities = new ArrayList<>();
+        List<Entity> entities = entitiesByClass.get(Bacteria.class).stream().toList();
+        entitiesByClass.get(Bacteria.class).clear();
 
         for (int i = 0; i <= MIN_AMOUNT_BACTERIAS; i++) {
             int j = i % entities.size();
@@ -67,32 +78,38 @@ public class GameModel {
             genome1.mutateGenome();
             Bacteria newBacteria1 = new Bacteria(genome1);
             newBacteria1.onStart(support);
-            newEntities.add(newBacteria1);
+            entitiesByClass.get(Bacteria.class).add(newBacteria1);
         }
 
         for (Entity entity : entities) {
             entity.onFinish(support);
         }
-        entities.clear();
-        this.entities = newEntities;
     }
 
-    public List<Entity> getEntities() {
-        return entities; //ListUtils.union(entities, gameState.getTargetList());
+    public Map<Class<? extends Entity>, Set<Entity>> getEntities() {
+        return entitiesByClass;
     }
 
     public void setTarget(Point point) {
         support.firePropertyChange("new point", null, point);
     }
 
-    public List<Entity> initStateOfBacterias(int amount) {
-        List<Entity> entityList = new ArrayList<>();
+    public Set<Entity> initStateOfBacterias(int amount) {
+        Set<Entity> entitySet = new LinkedHashSet<>();
         for (int i = 0; i < amount; i++) {
             Bacteria bacteria = new Bacteria(Math.random() * 400, Math.random() * 400);
             bacteria.setTarget(new Point((int) (Math.random() * 400), (int) (Math.random() * 400)));
             bacteria.onStart(support);
-            entityList.add(bacteria);
+            entitySet.add(bacteria);
         }
-        return entityList;
+        return entitySet;
+    }
+
+    public Set<Entity> initStateOfTargets(int amount) {
+        Set<Entity> entitySet = new LinkedHashSet<>();
+        for (int i = 0; i < amount; i++) {
+            entitySet.add(new Target((int) (Math.random() * getDimension().width), (int) (Math.random() * getDimension().height)));
+        }
+        return entitySet;
     }
 }

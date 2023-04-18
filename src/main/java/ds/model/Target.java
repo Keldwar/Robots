@@ -1,8 +1,10 @@
 package ds.model;
 
 import java.awt.*;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeSupport;
 
-public class Target {
+public class Target implements Entity {
     private volatile int x;
     private volatile int y;
     private TargetType type;
@@ -54,5 +56,30 @@ public class Target {
 
     public void setType(TargetType type) {
         this.type = type;
+    }
+
+    @Override
+    public void update(GameState gameState) {
+
+    }
+
+    @Override
+    public void onStart(PropertyChangeSupport publisher) {
+        publisher.addPropertyChangeListener(this);
+    }
+
+    @Override
+    public void onFinish(PropertyChangeSupport publisher) {
+        publisher.removePropertyChangeListener(this);
+    }
+
+    @Override
+    public boolean isAlive() {
+        return true;
+    }
+
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) {
+
     }
 }

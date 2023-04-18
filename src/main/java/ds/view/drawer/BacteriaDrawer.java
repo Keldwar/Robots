@@ -40,7 +40,7 @@ public class BacteriaDrawer extends Drawer {
     }
 
     @Override
-    public Class<?> getDrawingType() {
+    public Class<? extends Entity> getDrawingType() {
         return Bacteria.class;
     }
 }

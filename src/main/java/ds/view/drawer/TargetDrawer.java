@@ -10,7 +10,7 @@ import java.awt.*;
 public class TargetDrawer extends Drawer {
     @Override
     public void draw(Graphics2D g, Entity entity) {
-        Target target = ((Bacteria) entity).getTarget();
+        Target target = (Target) entity;
         if (target.getType() == TargetType.FOOD) {
             g.setColor(Color.GREEN);
         } else if (target.getType() == TargetType.POISON) {
@@ -24,7 +24,7 @@ public class TargetDrawer extends Drawer {
     }
 
     @Override
-    public Class<?> getDrawingType() {
+    public Class<? extends Entity> getDrawingType() {
         return Target.class;
     }
 }

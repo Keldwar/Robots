@@ -12,10 +12,11 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 public class GameView extends JPanel {
     private final GameModel gameModel;
-    private final Map<Class<?>, Drawer> map;
+    private final Map<Class<? extends Entity>, Drawer> map;
 
     public GameView(GameModel gameModel) {
         map = new HashMap<>();
@@ -42,10 +43,12 @@ public class GameView extends JPanel {
         Graphics2D g2d = (Graphics2D) g;
         RenderingHints rh = new RenderingHints(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g2d.setRenderingHints(rh);
-        ArrayList<Entity> entities = (ArrayList<Entity>) gameModel.getEntities();
-        for (Entity entity : entities) {
-            map.get(entity.getClass()).draw(g2d, entity);
-            map.get(Target.class).draw(g2d, entity);
+
+        Map<Class<? extends Entity>, Set<Entity>> entities = gameModel.getEntities();
+        for (Map.Entry<Class<? extends Entity>, Set<Entity>> entry : entities.entrySet()) {
+            for (Entity entity : entry.getValue()) {
+                map.get(entry.getKey()).draw(g2d, entity);
+            }
         }
     }
 }
