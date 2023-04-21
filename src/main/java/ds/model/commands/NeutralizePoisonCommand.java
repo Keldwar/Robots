@@ -1,8 +1,8 @@
 package ds.model.commands;
 
-import ds.model.Bacteria;
+import ds.model.entities.Bacteria;
 import ds.model.GameState;
-import ds.model.TargetType;
+import ds.model.entities.TargetType;
 
 public class NeutralizePoisonCommand implements Command {
     private boolean isCompleted;

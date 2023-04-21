@@ -1,4 +1,6 @@
-package ds.model;
+package ds.model.entities;
+
+import ds.model.GameState;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;

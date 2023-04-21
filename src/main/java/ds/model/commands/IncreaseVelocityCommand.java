@@ -1,6 +1,6 @@
 package ds.model.commands;
 
-import ds.model.Bacteria;
+import ds.model.entities.Bacteria;
 import ds.model.GameState;
 
 public class IncreaseVelocityCommand implements Command {

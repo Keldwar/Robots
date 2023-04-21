@@ -1,9 +1,8 @@
 package ds.view.drawer;
 
-import ds.model.Bacteria;
-import ds.model.Entity;
-import ds.model.Target;
-import ds.model.TargetType;
+import ds.model.entities.Entity;
+import ds.model.entities.Target;
+import ds.model.entities.TargetType;
 
 import java.awt.*;
 

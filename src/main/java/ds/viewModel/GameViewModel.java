@@ -1,5 +1,6 @@
 package ds.viewModel;
 
+import ds.log.Logger;
 import ds.view.GameView;
 import ds.view.GameWindow;
 import ds.model.GameModel;
@@ -45,7 +46,7 @@ public class GameViewModel {
         gameWindow.getGameView().addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                System.out.println(e.getPoint());
+                Logger.debug("Clicked at " + e.getPoint());
                 gameModel.setTarget(e.getPoint());
                 getGameView().repaint();
             }
@@ -54,9 +55,8 @@ public class GameViewModel {
             @Override
             public void componentResized(final ComponentEvent e) {
                 super.componentResized(e);
-                System.out.println("resize");
+                Logger.debug("Window resized to " + gameWindow.getSize());
                 gameModel.setDimension((gameWindow.getSize()));
-                System.out.println(gameModel.getDimension());
             }
         });
     }

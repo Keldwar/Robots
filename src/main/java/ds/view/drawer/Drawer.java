@@ -1,6 +1,6 @@
 package ds.view.drawer;
 
-import ds.model.Entity;
+import ds.model.entities.Entity;
 
 import java.awt.*;
 

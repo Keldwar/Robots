@@ -1,11 +1,11 @@
-package ds.model;
+package ds.model.entities;
 
 import java.util.Random;
 
 public enum TargetType {
     FOOD(10),
     POISON(-10),
-    NONE(0);
+    NONE(10);
     public final int damage;
 
     TargetType(int damage) {

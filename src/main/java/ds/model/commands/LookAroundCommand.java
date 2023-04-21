@@ -1,9 +1,9 @@
 package ds.model.commands;
 
-import ds.model.Bacteria;
-import ds.model.Entity;
+import ds.model.entities.Bacteria;
+import ds.model.entities.Entity;
 import ds.model.GameState;
-import ds.model.Target;
+import ds.model.entities.Target;
 
 import java.util.Set;
 

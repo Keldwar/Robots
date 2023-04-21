@@ -1,15 +1,13 @@
 package ds.view;
 
-import ds.model.Entity;
+import ds.model.entities.Entity;
 import ds.model.GameModel;
-import ds.model.Target;
 import ds.view.drawer.Drawer;
 import ds.view.drawer.BacteriaDrawer;
 import ds.view.drawer.TargetDrawer;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;

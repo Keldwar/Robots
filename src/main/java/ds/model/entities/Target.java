@@ -1,12 +1,14 @@
-package ds.model;
+package ds.model.entities;
+
+import ds.model.GameState;
 
 import java.awt.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeSupport;
 
 public class Target implements Entity {
-    private volatile int x;
-    private volatile int y;
+    private final int x;
+    private final int y;
     private TargetType type;
 
     public Target() {
@@ -21,14 +23,6 @@ public class Target implements Entity {
         this.type = TargetType.randomTargetType();
     }
 
-    public void setX(int x) {
-        this.x = x;
-    }
-
-    public void setY(int y) {
-        this.y = y;
-    }
-
     public int getX() {
         return x;
     }
@@ -37,14 +31,6 @@ public class Target implements Entity {
         return y;
     }
 
-    public void setTargetPosition(Point p) {
-        setX(p.x);
-        setY(p.y);
-    }
-
-    protected Point getTargetPosition() {
-        return new Point(getX(), getY());
-    }
 
     public static boolean isCorrect(Target target, Dimension dimension) {
         if (target == null)
@@ -54,10 +40,6 @@ public class Target implements Entity {
 
     public TargetType getType() {
         return type;
-    }
-
-    public void setType(TargetType type) {
-        this.type = type;
     }
 
     @Override

@@ -1,14 +1,14 @@
 package ds.model.commands;
 
-import ds.model.Bacteria;
+import ds.model.entities.Bacteria;
 import ds.model.GameState;
-import ds.model.Target;
-import ds.model.TargetType;
+import ds.model.entities.Target;
+import ds.model.entities.TargetType;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import static ds.model.Bacteria.duration;
+import static ds.model.entities.Bacteria.duration;
 
 public class MoveBacteriaCommand implements Command {
     private boolean isCompleted;

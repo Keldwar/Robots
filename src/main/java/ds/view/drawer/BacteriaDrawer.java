@@ -1,7 +1,7 @@
 package ds.view.drawer;
 
-import ds.model.Bacteria;
-import ds.model.Entity;
+import ds.model.entities.Bacteria;
+import ds.model.entities.Entity;
 import ds.model.Mood;
 
 import java.awt.*;

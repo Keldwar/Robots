@@ -1,6 +1,11 @@
 package ds.model;
 
 
+import ds.log.Logger;
+import ds.model.entities.Bacteria;
+import ds.model.entities.Entity;
+import ds.model.entities.Target;
+
 import java.awt.*;
 import java.beans.PropertyChangeSupport;
 import java.util.*;
@@ -8,7 +13,7 @@ import java.util.List;
 
 public class GameModel {
     private static final int MIN_AMOUNT_BACTERIAS = 2;
-    private static final int AMOUNT_OF_BACTERIAS = 3;
+    private static final int AMOUNT_OF_BACTERIAS = 1;
     private static final int AMOUNT_OF_TARGETS = 3;
     private final PropertyChangeSupport support;
     private final GameState gameState;
@@ -21,7 +26,7 @@ public class GameModel {
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
-                System.out.println("timer");
+                Logger.debug("Satiety timer worked");
                 support.firePropertyChange("change satiety", null, -10);
             }
         }, 0, 3000);
@@ -44,7 +49,11 @@ public class GameModel {
     }
 
     public Dimension getDimension() {
-        return new Dimension(400, 400);
+        if (gameState != null) {
+            return gameState.getDimension();
+        } else {
+            return new Dimension(400, 400);
+        }
     }
 
     public void updateModel() {

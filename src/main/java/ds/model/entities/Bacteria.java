@@ -1,6 +1,9 @@
-package ds.model;
+package ds.model.entities;
 
 
+import ds.model.GameState;
+import ds.model.Genome;
+import ds.model.Mood;
 import ds.model.commands.Command;
 
 import java.awt.*;
@@ -124,8 +127,6 @@ public class Bacteria implements Entity {
             int t = curCom + currentCommand.getNextStep(this);
             if (currentCommand.isCompleted()) {
                 currentCommand = nextCommand(t);
-                System.out.println(curCom);
-                System.out.println(t);
                 curCom = t;
             }
         } else

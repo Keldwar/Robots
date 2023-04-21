@@ -1,10 +1,11 @@
 package ds.model;
 
+import ds.model.entities.Entity;
+
 import java.awt.*;
 import java.util.*;
 
 public class GameState {
-    private final int amountOfTargets = 20;
     private Dimension dimension;
     private final Map<Class<? extends Entity>, Set<Entity>> entitiesByClass;
 
