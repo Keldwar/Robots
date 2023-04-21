@@ -28,30 +28,23 @@ public class Bacteria implements Entity {
     public Bacteria(double x, double y) {
         this.positionX = x;
         this.positionY = y;
-        this.target = new Target();
+        this.target = null;
         this.bacteriaDirection = Math.random() * 10;
         this.dimension = new Dimension(400, 400);
         this.mood = Mood.randomMood();
         this.satiety = (int) (INITIAL_SATIETY + Math.random() * (MAX_SATIETY - INITIAL_SATIETY));
         this.isAlive = true;
-        this.currentCommand = null; //new MoveBacteriaCommand();
+        this.currentCommand = null;
         this.genome = new Genome();
     }
 
-    public Bacteria(Genome genome) {
-        this(10, 10);
+    public Bacteria(Genome genome, double x, double y) {
+        this(x, y);
         this.genome = genome;
     }
 
     private void setRandomMood() {
         this.mood = Mood.randomMood();
-    }
-
-    public Bacteria() {
-        this.positionX = 100;
-        this.positionY = 100;
-        this.target = new Target();
-        this.bacteriaDirection = 0;
     }
 
     public void setMood(Mood mood) {
@@ -64,9 +57,6 @@ public class Bacteria implements Entity {
 
     public void setDimension(Dimension dimension) {
         this.dimension = dimension;
-        if (!target.isPositionCorrect(dimension)) {
-            target = new Target((int) (Math.random() * dimension.width), (int) (Math.random() * dimension.height));
-        }
     }
 
     public Dimension getDimension() {
@@ -107,9 +97,9 @@ public class Bacteria implements Entity {
 
     public void setTarget(Point point) {
         if (point.x > dimension.width || point.y > dimension.height) {
-            this.target.setTargetPosition(new Point(point.x / dimension.width, point.y / dimension.height));
+            target = new Target(point.x / dimension.width, point.y / dimension.height);
         }
-        this.target.setTargetPosition(point);
+        target = new Target(point.x, point.y);
     }
 
     public void setTarget(Target target) {
@@ -159,7 +149,6 @@ public class Bacteria implements Entity {
     }
 
     public void onTargetAchieved() {
-        this.setTarget(new Target((int) (Math.random() * dimension.width), (int) (Math.random() * dimension.height)));
         this.satiety += target.getType().damage;
         if (this.satiety > 50) {
             this.setRandomMood();

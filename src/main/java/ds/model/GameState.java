@@ -1,19 +1,21 @@
 package ds.model;
 
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class GameState {
     private final int amountOfTargets = 20;
     private Dimension dimension;
-    private final List<Target> targetList;
+    private final Map<Class<? extends Entity>, Set<Entity>> entitiesByClass;
 
     public GameState() {
-        this.targetList = new ArrayList<>(amountOfTargets);
         this.dimension = new Dimension(400, 400);
-        for (int i = 0; i < amountOfTargets; i++)
-            targetList.add(new Target((int) (Math.random() * dimension.width), (int) (Math.random() * dimension.height)));
+        this.entitiesByClass = new LinkedHashMap<>();
+    }
+
+    public GameState(Map<Class<? extends Entity>, Set<Entity>> entitiesByClass) {
+        this.entitiesByClass = entitiesByClass;
+        this.dimension = new Dimension(400, 400);
     }
 
     public void setDimension(Dimension dimension) {
@@ -24,7 +26,7 @@ public class GameState {
         return this.dimension;
     }
 
-    public List<Target> getTargetList() {
-        return this.targetList;
+    public Map<Class<? extends Entity>, Set<Entity>> getEntitiesByClass() {
+        return this.entitiesByClass;
     }
 }

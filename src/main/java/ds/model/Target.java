@@ -46,8 +46,10 @@ public class Target implements Entity {
         return new Point(getX(), getY());
     }
 
-    public boolean isPositionCorrect(Dimension dimension) {
-        return this.x <= dimension.width && this.y <= dimension.height;
+    public static boolean isCorrect(Target target, Dimension dimension) {
+        if (target == null)
+            return false;
+        return target.x <= dimension.width && target.y <= dimension.height;
     }
 
     public TargetType getType() {

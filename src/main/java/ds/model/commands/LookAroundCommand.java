@@ -1,10 +1,11 @@
 package ds.model.commands;
 
 import ds.model.Bacteria;
+import ds.model.Entity;
 import ds.model.GameState;
 import ds.model.Target;
 
-import java.util.List;
+import java.util.Set;
 
 public class LookAroundCommand implements Command {
     private boolean isCompleted = false;
@@ -12,7 +13,7 @@ public class LookAroundCommand implements Command {
     @Override
     public void execution(Bacteria bacteria, GameState gameState) {
         System.out.println("Look Around command execution");
-        //bacteria.setTarget(chooseTarget(bacteria, gameState));
+        bacteria.setTarget(chooseTarget(bacteria, gameState));
         this.isCompleted = true;
     }
 
@@ -27,11 +28,12 @@ public class LookAroundCommand implements Command {
     }
 
     private Target chooseTarget(Bacteria bacteria, GameState gameState) {
-        List<Target> targetList = gameState.getTargetList();
+        Set<Entity> targetSet = gameState.getEntitiesByClass().get(Target.class);
         Target result = null;
         double minDistance = Double.MAX_VALUE;
 
-        for (Target target : targetList) {
+        for (Entity entity : targetSet) {
+            Target target = (Target) entity;
             double distance = Math.pow(target.getX() - bacteria.getPositionX(), 2) +
                     Math.pow(target.getY() - bacteria.getPositionY(), 2);
             if (distance < minDistance) {

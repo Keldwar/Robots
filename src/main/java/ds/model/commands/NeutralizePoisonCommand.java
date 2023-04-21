@@ -2,6 +2,7 @@ package ds.model.commands;
 
 import ds.model.Bacteria;
 import ds.model.GameState;
+import ds.model.TargetType;
 
 public class NeutralizePoisonCommand implements Command {
     private boolean isCompleted;
@@ -13,7 +14,13 @@ public class NeutralizePoisonCommand implements Command {
     @Override
     public void execution(Bacteria bacteria, GameState gameState) {
         System.out.println("NeutralizePoisonCommand");
-        bacteria.changeSatiety(20);
+        if (bacteria.getTarget() == null) {
+            isCompleted = true;
+            return;
+        }
+        if (bacteria.getTarget().getType() == TargetType.POISON) {
+            bacteria.changeSatiety(20);
+        }
         isCompleted = true;
     }
 

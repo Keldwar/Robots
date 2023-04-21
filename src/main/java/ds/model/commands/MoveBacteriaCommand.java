@@ -40,10 +40,18 @@ public class MoveBacteriaCommand implements Command {
 
     @Override
     public int getNextStep(Bacteria bacteria) {
-        return stepByTargetType.get(bacteria.getTarget().getType());
+        if (bacteria.getTarget() != null)
+            return stepByTargetType.get(bacteria.getTarget().getType());
+        return 1;
     }
 
     public void move(Bacteria bacteria, GameState gameState) {
+        if (!Target.isCorrect(bacteria.getTarget(), gameState.getDimension()) ||
+                !gameState.getEntitiesByClass().get(Target.class).contains(bacteria.getTarget())) {
+            this.isCompleted = true;
+            return;
+        }
+
         Target target = bacteria.getTarget();
         double distance = distance(target.getX(), target.getY(), bacteria.getPositionX(), bacteria.getPositionY());
 
@@ -51,7 +59,7 @@ public class MoveBacteriaCommand implements Command {
             this.isCompleted = true;
             bacteria.onTargetAchieved();
             System.out.println(bacteria.getSatiety());
-            //gameState.getTargetList().remove(bacteria.getTarget());
+            gameState.getEntitiesByClass().get(Target.class).remove(bacteria.getTarget());
             return;
         }
         double angleToTarget = angleTo(bacteria.getPositionX(), bacteria.getPositionY(), target.getX(), target.getY());
