@@ -2,6 +2,7 @@ package ds;
 
 import com.formdev.flatlaf.FlatLightLaf;
 import ds.model.GameModel;
+import ds.view.MainApplicationFrame;
 
 import javax.swing.*;
 import java.awt.*;

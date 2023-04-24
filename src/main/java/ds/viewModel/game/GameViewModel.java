@@ -1,7 +1,7 @@
-package ds.viewModel;
+package ds.viewModel.game;
 
 import ds.log.Logger;
-import ds.view.GameView;
+import ds.view.game.GameView;
 import ds.model.GameModel;
 
 import java.awt.event.ComponentAdapter;

@@ -30,7 +30,8 @@ public class MenuCreator {
     public JMenuBar generateMenuBar() {
         JMenuBar menuBar = new JMenuBar();
 
-        JMenu lookAndFeelMenu = createMenu("Режим отображения", "Управление режимом отображения приложения", KeyEvent.VK_V);
+        JMenu lookAndFeelMenu = createMenu("Режим отображения",
+                "Управление режимом отображения приложения", KeyEvent.VK_V);
         JMenuItem systemLookAndFeel = createMenuItem("Системная схема", (event) -> {
             setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
             frame.invalidate();

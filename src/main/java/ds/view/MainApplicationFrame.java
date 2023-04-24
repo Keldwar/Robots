@@ -1,11 +1,12 @@
-package ds;
+package ds.view;
 
 import ds.model.GameModel;
-import ds.view.GameWindow;
+import ds.view.game.GameWindow;
 import ds.log.LogWindow;
 import ds.log.Logger;
-import ds.view.MenuCreator;
-import ds.viewModel.GameWindowViewModel;
+import ds.view.settings.SettingsWindow;
+import ds.viewModel.game.GameWindowViewModel;
+import ds.viewModel.settings.SettingsWindowViewModel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -26,6 +27,9 @@ public class MainApplicationFrame extends JFrame {
 
         GameWindow gameWindow = new GameWindowViewModel(gameModel).getGameWindow();
         addWindow(gameWindow);
+
+        SettingsWindow settingsWindow = new SettingsWindowViewModel(gameModel).getSettingsWindow();
+        addWindow(settingsWindow);
 
         setJMenuBar(new MenuCreator(this).generateMenuBar());
         setDefaultCloseOperation(EXIT_ON_CLOSE);

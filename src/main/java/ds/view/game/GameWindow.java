@@ -1,4 +1,4 @@
-package ds.view;
+package ds.view.game;
 
 
 import javax.swing.*;

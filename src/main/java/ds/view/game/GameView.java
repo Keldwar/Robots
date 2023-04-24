@@ -1,4 +1,4 @@
-package ds.view;
+package ds.view.game;
 
 import ds.model.entities.Entity;
 import ds.model.GameModel;
