@@ -1,8 +1,6 @@
 package ds;
 
 import com.formdev.flatlaf.FlatLightLaf;
-import ds.view.GameView;
-import ds.view.GameWindow;
 import ds.model.GameModel;
 import ds.viewModel.GameViewModel;
 
@@ -18,9 +16,7 @@ public class Main {
             e.printStackTrace();
         }
         GameModel gameModel = new GameModel();
-        GameView gameView = new GameView(gameModel);
-        GameWindow gameWindow = new GameWindow(gameView);
-        GameViewModel viewModel = new GameViewModel(gameModel, gameWindow);
+        GameViewModel viewModel = new GameViewModel(gameModel);
 
         SwingUtilities.invokeLater(() -> {
             MainApplicationFrame frame = new MainApplicationFrame(viewModel);

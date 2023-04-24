@@ -12,9 +12,9 @@ import java.util.*;
 import java.util.List;
 
 public class GameModel {
-    private static final int MIN_AMOUNT_BACTERIAS = 2;
-    private static final int AMOUNT_OF_BACTERIAS = 1;
-    private static final int AMOUNT_OF_TARGETS = 3;
+    private static final int MIN_AMOUNT_BACTERIAS = 18;
+    private static final int AMOUNT_OF_BACTERIAS = 20;
+    private static final int AMOUNT_OF_TARGETS = 20;
     private final PropertyChangeSupport support;
     private final GameState gameState;
 

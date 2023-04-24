@@ -26,7 +26,7 @@ public class MainApplicationFrame extends JFrame {
         LogWindow logWindow = createLogWindow();
         addWindow(logWindow);
 
-        GameWindow gameWindow = gameViewModel.getGameWindow();
+        GameWindow gameWindow = new GameWindow(gameViewModel.getGameView());
         addWindow(gameWindow);
 
         setJMenuBar(generateMenuBar());
