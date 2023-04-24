@@ -54,7 +54,7 @@ public class GameViewModel {
             @Override
             public void componentResized(final ComponentEvent e) {
                 super.componentResized(e);
-                Logger.debug("Window resized to " + gameView.getSize());
+                Logger.debug("Panel resized to " + gameView.getSize());
                 gameModel.setDimension((gameView.getSize()));
             }
         });
