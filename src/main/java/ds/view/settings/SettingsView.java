@@ -1,12 +1,10 @@
 package ds.view.settings;
 
-import ds.model.GameModel;
-
 import javax.swing.*;
-import java.util.Hashtable;
+import java.awt.event.ActionListener;
 
 public class SettingsView extends JPanel {
-    public SettingsView(GameModel gameModel) {
+    public SettingsView(ActionListener actionListener) {
         JSlider amountOfBacteria = new JSlider(JSlider.HORIZONTAL,
                 0, 100, 20);
         amountOfBacteria.setMajorTickSpacing(10);
@@ -20,6 +18,9 @@ public class SettingsView extends JPanel {
         this.add(amountOfTargets);
 
         JButton startButton = new JButton("Старт");
+        startButton.setActionCommand("Start");
+        startButton.addActionListener(actionListener);
         this.add(startButton);
+
     }
 }

@@ -133,4 +133,7 @@ public class GameModel {
         }
         return entitySet;
     }
+    public void Print() {
+        Logger.debug("model Print");
+    }
 }
