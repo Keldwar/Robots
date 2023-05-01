@@ -13,8 +13,8 @@ import java.util.List;
 
 public class GameModel {
     private static final int MIN_AMOUNT_BACTERIAS = 18;
-    private static final int AMOUNT_OF_BACTERIAS = 20;
-    private static final int AMOUNT_OF_TARGETS = 20;
+    private static int AMOUNT_OF_BACTERIAS = 20;
+    private static int AMOUNT_OF_TARGETS = 20;
     private final PropertyChangeSupport support;
     private final GameState gameState;
 
@@ -133,7 +133,11 @@ public class GameModel {
         }
         return entitySet;
     }
-    public void Print() {
-        Logger.debug("model Print");
+
+
+    public void setSettings(Settings settings) {
+        AMOUNT_OF_BACTERIAS = settings.amountOfBacteria();
+        AMOUNT_OF_TARGETS = settings.amountOfTargets();
+        Logger.debug(String.valueOf(AMOUNT_OF_BACTERIAS));
     }
 }

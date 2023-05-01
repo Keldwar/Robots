@@ -1,5 +1,6 @@
 package ds.viewModel.settings;
 
+import ds.log.Logger;
 import ds.model.GameModel;
 import ds.view.settings.SettingsView;
 
@@ -14,7 +15,8 @@ public class SettingsViewModel {
         @Override
         public void actionPerformed(ActionEvent e) {
             if (Objects.equals(e.getActionCommand(), "Start")) {
-                gameModel.Print();
+                gameModel.setSettings(settingsView.getSettings());
+                Logger.debug("StartButton clicked");
             }
         }
     };
@@ -27,4 +29,6 @@ public class SettingsViewModel {
     public SettingsView getSettingsView() {
         return settingsView;
     }
+
+
 }
