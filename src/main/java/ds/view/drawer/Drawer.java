@@ -1,6 +1,6 @@
 package ds.view.drawer;
 
-import ds.model.Entity;
+import ds.model.entities.Entity;
 
 import java.awt.*;
 
@@ -15,5 +15,5 @@ public abstract class Drawer {
 
     public abstract void draw(Graphics2D g, Entity entity);
 
-    public abstract Class<?> getDrawingType();
+    public abstract Class<? extends Entity> getDrawingType();
 }

@@ -1,7 +1,7 @@
-package ds.viewModel;
+package ds.viewModel.game;
 
-import ds.view.GameView;
-import ds.view.GameWindow;
+import ds.log.Logger;
+import ds.view.game.GameView;
 import ds.model.GameModel;
 
 import java.awt.event.ComponentAdapter;
@@ -14,16 +14,16 @@ import java.util.TimerTask;
 
 public class GameViewModel {
     private final GameModel gameModel;
-    private final GameWindow gameWindow;
+    private final GameView gameView;
     private final java.util.Timer timer = initTimer();
 
     private static java.util.Timer initTimer() {
         return new Timer("events generator", true);
     }
 
-    public GameViewModel(GameModel gameModel, GameWindow gameWindow) {
+    public GameViewModel(GameModel gameModel) {
         this.gameModel = gameModel;
-        this.gameWindow = gameWindow;
+        this.gameView = new GameView(gameModel);
         initListeners();
     }
 
@@ -31,7 +31,7 @@ public class GameViewModel {
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
-                gameModel.setDimension(gameWindow.getGameView().getSize());
+                gameModel.setDimension(gameView.getSize());
                 getGameView().updateView();
             }
         }, 0, 50);
@@ -42,30 +42,26 @@ public class GameViewModel {
                 gameModel.updateModel();
             }
         }, 0, 10);
-        gameWindow.getGameView().addMouseListener(new MouseAdapter() {
+        gameView.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                System.out.println(e.getPoint());
+                Logger.debug("Clicked at " + e.getPoint());
                 gameModel.setTarget(e.getPoint());
                 getGameView().repaint();
             }
         });
-        gameWindow.addComponentListener(new ComponentAdapter() {
+        gameView.addComponentListener(new ComponentAdapter() {
             @Override
             public void componentResized(final ComponentEvent e) {
                 super.componentResized(e);
-                System.out.println("resize");
-                gameModel.setDimension((gameWindow.getSize()));
-                System.out.println(gameModel.getDimension());
+                Logger.debug("Panel resized to " + gameView.getSize());
+                gameModel.setDimension((gameView.getSize()));
             }
         });
     }
 
     public GameView getGameView() {
-        return gameWindow.getGameView();
+        return gameView;
     }
 
-    public GameWindow getGameWindow() {
-        return gameWindow;
-    }
 }
