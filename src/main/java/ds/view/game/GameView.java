@@ -2,6 +2,7 @@ package ds.view.game;
 
 import ds.model.entities.Entity;
 import ds.model.GameModel;
+import ds.view.drawer.BiomeDrawer;
 import ds.view.drawer.Drawer;
 import ds.view.drawer.BacteriaDrawer;
 import ds.view.drawer.TargetDrawer;
@@ -20,6 +21,7 @@ public class GameView extends JPanel {
         map = new HashMap<>();
         map.put(new BacteriaDrawer().getDrawingType(), new BacteriaDrawer());
         map.put(new TargetDrawer().getDrawingType(), new TargetDrawer());
+        map.put(new BiomeDrawer().getDrawingType(), new BiomeDrawer());
         this.gameModel = gameModel;
         setDoubleBuffered(true);
         this.setPreferredSize(new Dimension(400, 400));

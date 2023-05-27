@@ -1,10 +1,13 @@
 package ds.model;
 
 
+import ds.bus.GameEventBus;
 import ds.log.Logger;
 import ds.model.entities.Bacteria;
+import ds.model.entities.Biome;
 import ds.model.entities.Entity;
 import ds.model.entities.Target;
+import ds.view.game.Statistics;
 
 import java.awt.*;
 import java.beans.PropertyChangeSupport;
@@ -15,12 +18,15 @@ public class GameModel {
     private int minAmountBacterias = 18;
     private int amountOfBacterias = 20;
     private int amountOfTargets = 20;
+    private int amountOfBiomes = 5;
+    private final int maxDiamOfBiome = 300;
     private final PropertyChangeSupport support;
     private volatile GameState gameState;
+    private final GameEventBus gameEventBus;
 
-    public GameModel() {
+    public GameModel(GameEventBus gameEventBus) {
         this.support = new PropertyChangeSupport(this);
-
+        this.gameEventBus = gameEventBus;
         Timer timer = initTimer();
         timer.schedule(new TimerTask() {
             @Override
@@ -35,7 +41,17 @@ public class GameModel {
         Map<Class<? extends Entity>, Set<Entity>> initEntities = new LinkedHashMap<>();
         initEntities.put(Bacteria.class, initStateOfBacterias(amountOfBacterias));
         initEntities.put(Target.class, initStateOfTargets(amountOfTargets));
+        initEntities.put(Biome.class, initBiomes(amountOfBiomes));
         return initEntities;
+    }
+
+    private Set<Entity> initBiomes(int amountOfBiomes) {
+        Set<Entity> entitySet = new LinkedHashSet<>();
+        for (int i = 0; i < amountOfBiomes; i++) {
+            entitySet.add(new Biome((int) (Math.random() * maxDiamOfBiome + 1), (int) (Math.random() * getDimension().width),
+                    (int) (Math.random() * getDimension().height)));
+        }
+        return entitySet;
     }
 
     private static Timer initTimer() {
@@ -147,7 +163,11 @@ public class GameModel {
         amountOfBacterias = settings.amountOfBacteria();
         amountOfTargets = settings.amountOfTargets();
         minAmountBacterias = settings.minBacteria();
-        Logger.debug(String.valueOf(minAmountBacterias));
+        amountOfBiomes = settings.amountOfBiomes();
         this.gameState = new GameState(initEntitiesByClass());
+    }
+
+    public Statistics getStatistics() {
+        return new Statistics(gameState.getEntitiesByClass().get(Bacteria.class).size());
     }
 }

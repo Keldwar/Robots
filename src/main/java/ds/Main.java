@@ -17,8 +17,8 @@ public class Main {
             e.printStackTrace();
         }
 
-        GameModel gameModel = new GameModel();
         GameEventBus gameEventBus = new GameEventBus();
+        GameModel gameModel = new GameModel(gameEventBus);
 
         SwingUtilities.invokeLater(() -> {
             MainApplicationFrame frame = new MainApplicationFrame(gameModel, gameEventBus);

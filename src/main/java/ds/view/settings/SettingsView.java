@@ -2,6 +2,7 @@ package ds.view.settings;
 
 import ds.bus.GameAction;
 import ds.model.Settings;
+import ds.view.game.Statistics;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
@@ -12,9 +13,12 @@ public class SettingsView extends JPanel {
     private final JSlider amountOfBacteriaSlider;
     private final JSlider amountOfTargetsSlider;
     private final JSlider minBacteria;
+    private final JLabel curAmountOfBacteriaLabel;
     private static final int defaultAmountOfBacteria = 20;
     private static final int defaultAmountOfTargets = 20;
     private static final int defaultMinBacteria = 18;
+    private final JSlider amountOfBiomesSlider;
+    private static final int defaultAmountOfBiomes = 5;
 
     public SettingsView(ActionListener actionListener) {
         JTabbedPane tabbedPane = new JTabbedPane();
@@ -67,15 +71,29 @@ public class SettingsView extends JPanel {
         defaultButton.setActionCommand(GameAction.DEFAULT.name());
         defaultButton.addActionListener(actionListener);
         internalButtonsPanel.add(defaultButton);
-        buttonsPanel.setBorder(new TitledBorder("Характеристики бактерий"));
+        buttonsPanel.setBorder(new TitledBorder("Другое"));
         buttonsPanel.add(internalButtonsPanel, BorderLayout.SOUTH);
 
+        JLabel amountOfBiomesLabel = new JLabel("Количество биомов", JLabel.CENTER);
+        amountOfBiomesLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        amountOfBiomesSlider = new JSlider(JSlider.HORIZONTAL, 0, 10, 5);
+        amountOfBiomesSlider.setMajorTickSpacing(1);
+        amountOfBiomesSlider.setPaintTicks(true);
+        JPanel biomesPanel = new JPanel();
+        biomesPanel.setLayout(new BoxLayout(biomesPanel, BoxLayout.Y_AXIS));
+        biomesPanel.add(amountOfBiomesLabel);
+        biomesPanel.add(amountOfBiomesSlider, BorderLayout.NORTH);
+        buttonsPanel.add(biomesPanel, BorderLayout.NORTH);
         settingsTab.add(buttonsPanel);
         tabbedPane.addTab("Настройки", settingsTab);
 
 
         JPanel statisticsTab = new JPanel();
-
+        JLabel cur = new JLabel("Бактерий живы", JLabel.LEFT);
+        statisticsTab.add(cur);
+        curAmountOfBacteriaLabel = new JLabel();
+        statisticsTab.add(curAmountOfBacteriaLabel);
 
         tabbedPane.addTab("Статистика", statisticsTab);
         this.add(tabbedPane);
@@ -84,12 +102,17 @@ public class SettingsView extends JPanel {
 
     public Settings getSettings() {
         return new Settings(amountOfBacteriaSlider.getValue(), amountOfTargetsSlider.getValue(),
-                minBacteria.getValue());
+                minBacteria.getValue(), amountOfBiomesSlider.getValue());
     }
 
     public void setDefaultSettings() {
         amountOfBacteriaSlider.setValue(defaultAmountOfBacteria);
         amountOfTargetsSlider.setValue(defaultAmountOfTargets);
         minBacteria.setValue(defaultMinBacteria);
+        amountOfBiomesSlider.setValue(defaultAmountOfBiomes);
+    }
+
+    public void setStatistics(Statistics statistics) {
+        curAmountOfBacteriaLabel.setText(String.valueOf(statistics.curAmountOfBacteria()));
     }
 }

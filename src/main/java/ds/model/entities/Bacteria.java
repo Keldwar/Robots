@@ -123,6 +123,7 @@ public class Bacteria implements Entity {
             this.setMood(Mood.HUNGRY);
 
         }
+        checkBiome(gameState);
         if (currentCommand != null) {
             int t = curCom + currentCommand.getNextStep(this);
             if (currentCommand.isCompleted()) {
@@ -133,6 +134,20 @@ public class Bacteria implements Entity {
             currentCommand = nextCommand(0);
 
         currentCommand.execution(this, gameState);
+    }
+
+    private void checkBiome(GameState gameState) {
+        for (Entity entity : gameState.getEntitiesByClass().get(Biome.class)) {
+            Biome biome = (Biome) entity;
+            if (Math.pow((positionX - biome.getX()), 2) +
+                    Math.pow((positionY - biome.getY()), 2) <= Math.pow(biome.getDiam() / 2, 2)) {
+                switch (biome.getType()) {
+                    case RED -> satiety -= 1;
+                    case GREEN -> satiety += 1;
+                    case BLUE -> satiety = MAX_SATIETY;
+                }
+            }
+        }
     }
 
     public Command nextCommand(int transition) {

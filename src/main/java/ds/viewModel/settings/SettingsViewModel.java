@@ -55,6 +55,7 @@ public class SettingsViewModel {
                 settingsView.setDefaultSettings();
                 gameModel.setSettings(settingsView.getSettings());
             }
+            case STATISTICS -> settingsView.setStatistics(gameModel.getStatistics());
         }
 
     }
