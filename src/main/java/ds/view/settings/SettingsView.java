@@ -1,8 +1,10 @@
 package ds.view.settings;
 
+import ds.bus.GameAction;
 import ds.model.Settings;
 
 import javax.swing.*;
+import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.awt.event.ActionListener;
 
@@ -10,50 +12,84 @@ public class SettingsView extends JPanel {
     private final JSlider amountOfBacteriaSlider;
     private final JSlider amountOfTargetsSlider;
     private final JSlider minBacteria;
+    private static final int defaultAmountOfBacteria = 20;
+    private static final int defaultAmountOfTargets = 20;
+    private static final int defaultMinBacteria = 18;
 
     public SettingsView(ActionListener actionListener) {
-        GridBagLayout layout = new GridBagLayout();
-        this.setLayout(layout);
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        gbc.gridx = 0;
-        gbc.gridy = 0;
+        JTabbedPane tabbedPane = new JTabbedPane();
+        JPanel settingsTab = new JPanel();
+        settingsTab.setLayout(new GridLayout(1, 2));
+
+        JLabel amountOfBacteriaLabel = new JLabel("Количество бактерий", JLabel.CENTER);
+        amountOfBacteriaLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        JPanel settingsPanel = new JPanel();
+        settingsPanel.setBorder(new TitledBorder("Общие"));
+        settingsPanel.setLayout(new BoxLayout(settingsPanel, BoxLayout.Y_AXIS));
+        settingsPanel.add(amountOfBacteriaLabel);
         amountOfBacteriaSlider = new JSlider(JSlider.HORIZONTAL,
                 1, 100, 20);
         amountOfBacteriaSlider.setMajorTickSpacing(10);
         amountOfBacteriaSlider.setPaintTicks(true);
-        this.add(amountOfBacteriaSlider, gbc);
+        settingsPanel.add(amountOfBacteriaSlider);
 
 
-        gbc.gridx = 1;
-        gbc.gridy = 0;
+        JLabel amountOfTargetsLabel = new JLabel("Количество целей", JLabel.CENTER);
+        amountOfTargetsLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        settingsPanel.add(amountOfTargetsLabel);
 
         amountOfTargetsSlider = new JSlider(JSlider.HORIZONTAL,
                 0, 100, 20);
         amountOfTargetsSlider.setMajorTickSpacing(10);
         amountOfTargetsSlider.setPaintTicks(true);
-        this.add(amountOfTargetsSlider, gbc);
-        gbc.gridx = 0;
-        gbc.gridy = 2;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        gbc.gridwidth = 2;
-        JButton startButton = new JButton("Старт");
-        startButton.setActionCommand("Start");
-        startButton.addActionListener(actionListener);
-        this.add(startButton, gbc);
+        settingsPanel.add(amountOfTargetsSlider);
 
-        minBacteria = new JSlider(JSlider.HORIZONTAL, 0, 100, 18);
+        JLabel minBacteriaLabel = new JLabel("Минимально бактерий", JLabel.CENTER);
+        minBacteriaLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        settingsPanel.add(minBacteriaLabel);
+        minBacteria = new JSlider(JSlider.HORIZONTAL, 0, 100, defaultMinBacteria);
         minBacteria.setMajorTickSpacing(10);
         minBacteria.setPaintTicks(true);
-        gbc.gridx = 2;
-        gbc.gridy = 0;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        gbc.gridwidth = 1;
-        this.add(minBacteria, gbc);
+        settingsPanel.add(minBacteria);
+
+        settingsTab.add(settingsPanel);
+        JPanel internalButtonsPanel = new JPanel();
+
+        JPanel buttonsPanel = new JPanel();
+        buttonsPanel.setLayout(new BorderLayout());
+        JButton startButton = new JButton("Старт");
+        startButton.setActionCommand(GameAction.START.name());
+        startButton.addActionListener(actionListener);
+        internalButtonsPanel.add(startButton);
+
+        JButton defaultButton = new JButton("Сбросить");
+        defaultButton.setActionCommand(GameAction.DEFAULT.name());
+        defaultButton.addActionListener(actionListener);
+        internalButtonsPanel.add(defaultButton);
+        buttonsPanel.setBorder(new TitledBorder("Характеристики бактерий"));
+        buttonsPanel.add(internalButtonsPanel, BorderLayout.SOUTH);
+
+        settingsTab.add(buttonsPanel);
+        tabbedPane.addTab("Настройки", settingsTab);
+
+
+        JPanel statisticsTab = new JPanel();
+
+
+        tabbedPane.addTab("Статистика", statisticsTab);
+        this.add(tabbedPane);
+
     }
 
     public Settings getSettings() {
         return new Settings(amountOfBacteriaSlider.getValue(), amountOfTargetsSlider.getValue(),
                 minBacteria.getValue());
+    }
+
+    public void setDefaultSettings() {
+        amountOfBacteriaSlider.setValue(defaultAmountOfBacteria);
+        amountOfTargetsSlider.setValue(defaultAmountOfTargets);
+        minBacteria.setValue(defaultMinBacteria);
     }
 }

@@ -1,6 +1,7 @@
 package ds;
 
 import com.formdev.flatlaf.FlatLightLaf;
+import ds.bus.GameEventBus;
 import ds.model.GameModel;
 import ds.view.MainApplicationFrame;
 
@@ -17,9 +18,10 @@ public class Main {
         }
 
         GameModel gameModel = new GameModel();
+        GameEventBus gameEventBus = new GameEventBus();
 
         SwingUtilities.invokeLater(() -> {
-            MainApplicationFrame frame = new MainApplicationFrame(gameModel);
+            MainApplicationFrame frame = new MainApplicationFrame(gameModel, gameEventBus);
             frame.pack();
             frame.setVisible(true);
             frame.setExtendedState(Frame.MAXIMIZED_BOTH);

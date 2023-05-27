@@ -1,5 +1,6 @@
 package ds.view;
 
+import ds.bus.GameEventBus;
 import ds.model.GameModel;
 import ds.view.game.GameWindow;
 import ds.log.LogWindow;
@@ -14,7 +15,7 @@ import java.awt.*;
 public class MainApplicationFrame extends JFrame {
     private final JDesktopPane desktopPane = new JDesktopPane();
 
-    public MainApplicationFrame(GameModel gameModel) {
+    public MainApplicationFrame(GameModel gameModel, GameEventBus gameEventBus) {
 
         int inset = 50;
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -28,7 +29,7 @@ public class MainApplicationFrame extends JFrame {
         GameWindow gameWindow = new GameWindowViewModel(gameModel).getGameWindow();
         addWindow(gameWindow);
 
-        SettingsWindow settingsWindow = new SettingsWindowViewModel(gameModel).getSettingsWindow();
+        SettingsWindow settingsWindow = new SettingsWindowViewModel(gameModel, gameEventBus).getSettingsWindow();
         addWindow(settingsWindow);
 
         setJMenuBar(new MenuCreator(this).generateMenuBar());
