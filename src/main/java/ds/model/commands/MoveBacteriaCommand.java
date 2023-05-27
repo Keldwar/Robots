@@ -24,7 +24,6 @@ public class MoveBacteriaCommand implements Command {
     }
 
     public MoveBacteriaCommand() {
-        System.out.println("Move command execution");
         this.isCompleted = false;
     }
 
@@ -58,7 +57,6 @@ public class MoveBacteriaCommand implements Command {
         if (distance < 0.5) {
             this.isCompleted = true;
             bacteria.onTargetAchieved();
-            System.out.println(bacteria.getSatiety());
             gameState.getEntitiesByClass().get(Target.class).remove(bacteria.getTarget());
             return;
         }

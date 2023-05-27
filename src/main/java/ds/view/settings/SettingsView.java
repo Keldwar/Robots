@@ -9,6 +9,7 @@ import java.awt.event.ActionListener;
 public class SettingsView extends JPanel {
     private final JSlider amountOfBacteriaSlider;
     private final JSlider amountOfTargetsSlider;
+    private final JSlider minBacteria;
 
     public SettingsView(ActionListener actionListener) {
         GridBagLayout layout = new GridBagLayout();
@@ -18,7 +19,7 @@ public class SettingsView extends JPanel {
         gbc.gridx = 0;
         gbc.gridy = 0;
         amountOfBacteriaSlider = new JSlider(JSlider.HORIZONTAL,
-                0, 100, 20);
+                1, 100, 20);
         amountOfBacteriaSlider.setMajorTickSpacing(10);
         amountOfBacteriaSlider.setPaintTicks(true);
         this.add(amountOfBacteriaSlider, gbc);
@@ -41,9 +42,18 @@ public class SettingsView extends JPanel {
         startButton.addActionListener(actionListener);
         this.add(startButton, gbc);
 
+        minBacteria = new JSlider(JSlider.HORIZONTAL, 0, 100, 18);
+        minBacteria.setMajorTickSpacing(10);
+        minBacteria.setPaintTicks(true);
+        gbc.gridx = 2;
+        gbc.gridy = 0;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.gridwidth = 1;
+        this.add(minBacteria, gbc);
     }
 
     public Settings getSettings() {
-        return new Settings(amountOfBacteriaSlider.getValue(), amountOfTargetsSlider.getValue());
+        return new Settings(amountOfBacteriaSlider.getValue(), amountOfTargetsSlider.getValue(),
+                minBacteria.getValue());
     }
 }

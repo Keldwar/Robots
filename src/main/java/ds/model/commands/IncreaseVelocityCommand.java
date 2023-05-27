@@ -12,7 +12,6 @@ public class IncreaseVelocityCommand implements Command {
 
     @Override
     public void execution(Bacteria bacteria, GameState gameState) {
-        System.out.println("IncreaseVelocityCommand");
         //bacteria.increaseVelocity(0.01);
         isCompleted = true;
     }

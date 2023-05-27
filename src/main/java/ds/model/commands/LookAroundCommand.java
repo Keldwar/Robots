@@ -12,7 +12,6 @@ public class LookAroundCommand implements Command {
 
     @Override
     public void execution(Bacteria bacteria, GameState gameState) {
-        System.out.println("Look Around command execution");
         bacteria.setTarget(chooseTarget(bacteria, gameState));
         this.isCompleted = true;
     }

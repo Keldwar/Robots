@@ -12,15 +12,14 @@ import java.util.*;
 import java.util.List;
 
 public class GameModel {
-    private static final int MIN_AMOUNT_BACTERIAS = 18;
-    private static int AMOUNT_OF_BACTERIAS = 20;
-    private static int AMOUNT_OF_TARGETS = 20;
+    private static int minAmountBacterias = 18;
+    private static int amountOfBacterias = 20;
+    private static int amountOfTargets = 20;
     private final PropertyChangeSupport support;
-    private final GameState gameState;
+    private volatile GameState gameState;
 
     public GameModel() {
         this.support = new PropertyChangeSupport(this);
-        this.gameState = new GameState(initEntitiesByClass());
 
         Timer timer = initTimer();
         timer.schedule(new TimerTask() {
@@ -34,8 +33,8 @@ public class GameModel {
 
     private Map<Class<? extends Entity>, Set<Entity>> initEntitiesByClass() {
         Map<Class<? extends Entity>, Set<Entity>> initEntities = new LinkedHashMap<>();
-        initEntities.put(Bacteria.class, initStateOfBacterias(AMOUNT_OF_BACTERIAS));
-        initEntities.put(Target.class, initStateOfTargets(AMOUNT_OF_TARGETS));
+        initEntities.put(Bacteria.class, initStateOfBacterias(amountOfBacterias));
+        initEntities.put(Target.class, initStateOfTargets(amountOfTargets));
         return initEntities;
     }
 
@@ -44,6 +43,9 @@ public class GameModel {
     }
 
     public void setDimension(Dimension dimension) {
+        if (gameState == null) {
+            return;
+        }
         gameState.setDimension(dimension);
         support.firePropertyChange("set dimension", null, dimension);
     }
@@ -57,6 +59,9 @@ public class GameModel {
     }
 
     public void updateModel() {
+        if (gameState == null) {
+            return;
+        }
         Map<Class<? extends Entity>, Set<Entity>> entitiesByClass = gameState.getEntitiesByClass();
         for (Map.Entry<Class<? extends Entity>, Set<Entity>> entry : entitiesByClass.entrySet()) {
             for (Entity entity : entry.getValue()) {
@@ -67,10 +72,10 @@ public class GameModel {
             entry.getValue().removeIf(entity -> !entity.isAlive());
         }
 
-        if (entitiesByClass.get(Bacteria.class).size() <= MIN_AMOUNT_BACTERIAS) {
+        if (entitiesByClass.get(Bacteria.class).size() <= minAmountBacterias) {
             startNewGeneration();
         }
-        if (entitiesByClass.get(Target.class).size() <= AMOUNT_OF_TARGETS) {
+        if (entitiesByClass.get(Target.class).size() <= amountOfTargets) {
             generateTargets(entitiesByClass);
         }
     }
@@ -85,7 +90,7 @@ public class GameModel {
         List<Entity> entities = entitiesByClass.get(Bacteria.class).stream().toList();
         entitiesByClass.get(Bacteria.class).clear();
 
-        for (int i = 0; i <= MIN_AMOUNT_BACTERIAS; i++) {
+        for (int i = 0; i <= minAmountBacterias; i++) {
             int j = i % entities.size();
 
             Bacteria bacteria1 = (Bacteria) entities.get(j);
@@ -105,6 +110,9 @@ public class GameModel {
     }
 
     public Map<Class<? extends Entity>, Set<Entity>> getEntities() {
+        if (gameState == null) {
+            return null;
+        }
         return gameState.getEntitiesByClass();
     }
 
@@ -136,8 +144,10 @@ public class GameModel {
 
 
     public void setSettings(Settings settings) {
-        AMOUNT_OF_BACTERIAS = settings.amountOfBacteria();
-        AMOUNT_OF_TARGETS = settings.amountOfTargets();
-        Logger.debug(String.valueOf(AMOUNT_OF_BACTERIAS));
+        amountOfBacterias = settings.amountOfBacteria();
+        amountOfTargets = settings.amountOfTargets();
+        minAmountBacterias = settings.minBacteria();
+        Logger.debug(String.valueOf(minAmountBacterias));
+        this.gameState = new GameState(initEntitiesByClass());
     }
 }

@@ -42,7 +42,11 @@ public class GameView extends JPanel {
         RenderingHints rh = new RenderingHints(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g2d.setRenderingHints(rh);
 
+        // копирование не помогает
         Map<Class<? extends Entity>, Set<Entity>> entities = gameModel.getEntities();
+        if (entities == null) {
+            return;
+        }
         for (Map.Entry<Class<? extends Entity>, Set<Entity>> entry : entities.entrySet()) {
             for (Entity entity : entry.getValue()) {
                 map.get(entry.getKey()).draw(g2d, entity);

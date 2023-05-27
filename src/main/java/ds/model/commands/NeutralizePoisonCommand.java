@@ -13,7 +13,6 @@ public class NeutralizePoisonCommand implements Command {
 
     @Override
     public void execution(Bacteria bacteria, GameState gameState) {
-        System.out.println("NeutralizePoisonCommand");
         if (bacteria.getTarget() == null) {
             isCompleted = true;
             return;
